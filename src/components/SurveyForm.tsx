@@ -163,8 +163,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onBack }) => {
           }}
           transition={{
             duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
+            repeat: Infinity
           }}
           className="absolute top-20 left-1/4 w-96 h-96 bg-gradient-to-r from-indigo-500/15 to-purple-500/10 rounded-full blur-3xl"
         />
@@ -178,7 +177,6 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onBack }) => {
           transition={{
             duration: 20,
             repeat: Infinity,
-            ease: "easeInOut",
             delay: 3
           }}
           className="absolute bottom-20 right-1/4 w-[500px] h-[500px] bg-gradient-to-r from-slate-600/10 to-gray-600/10 rounded-full blur-3xl"
@@ -240,7 +238,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onBack }) => {
               className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full relative overflow-hidden"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.8 }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
               <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg border-2 border-indigo-400" />
@@ -258,7 +256,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onBack }) => {
               initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -50, opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.5 }}
             >
               <motion.h1
                 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-16 text-center leading-tight max-w-4xl mx-auto"
