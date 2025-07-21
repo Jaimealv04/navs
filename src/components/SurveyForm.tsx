@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Check, Star, Award } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Award } from 'lucide-react';
 import { surveyQuestions, type QuestionOption } from '../data/surveyQuestions';
 
 interface SurveyFormProps {

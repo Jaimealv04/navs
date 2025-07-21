@@ -30,8 +30,7 @@ const LandingPage: React.FC = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8,
-        ease: "easeInOut"
+        duration: 0.8
       }
     }
   };
@@ -44,8 +43,7 @@ const LandingPage: React.FC = () => {
       scale: [1, 1.3, 1],
       transition: {
         duration: 12,
-        repeat: Infinity,
-        ease: "easeInOut"
+        repeat: Infinity
       }
     }
   };
@@ -284,7 +282,7 @@ const LandingPage: React.FC = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-3xl blur opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                 <div className="relative bg-slate-900/70 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 group-hover:border-indigo-500/50 transition-all duration-300">
-                  <div className="text-4xl font-bold text-white mb-3 bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">
+                  <div className="text-4xl font-bold mb-3 bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">
                     {stat.value}
                   </div>
                   <div className="text-lg text-slate-300 group-hover:text-white transition-colors duration-300 mb-2 font-medium">
@@ -317,7 +315,7 @@ const LandingPage: React.FC = () => {
                 <motion.div
                   className="w-3 h-3 bg-orange-400 rounded-full"
                   animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 3, repeat: Infinity }}
                 />
                 <span className="hover:text-white transition-colors duration-300 font-medium">Carbones Premium Naturales</span>
               </div>
@@ -344,8 +342,7 @@ const LandingPage: React.FC = () => {
           }}
           transition={{
             duration: 20,
-            repeat: Infinity,
-            ease: 'linear'
+            repeat: Infinity
           }}
           className="w-full h-full rounded-full border border-indigo-400/20"
         />
@@ -359,8 +356,7 @@ const LandingPage: React.FC = () => {
           }}
           transition={{
             duration: 15,
-            repeat: Infinity,
-            ease: 'linear'
+            repeat: Infinity
           }}
           className="w-full h-full rounded-full border border-purple-400/20"
         />
@@ -374,8 +370,7 @@ const LandingPage: React.FC = () => {
           }}
           transition={{
             duration: 12,
-            repeat: Infinity,
-            ease: 'easeInOut'
+            repeat: Infinity
           }}
           className="w-full h-full rounded-full border border-slate-400/20"
         />
