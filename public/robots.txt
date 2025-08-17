@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://egohouse.es/sitemap.xml
+
+# Block access to sensitive areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+
+# Allow common crawl paths
+Allow: /assets/
+Allow: /images/

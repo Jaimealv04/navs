@@ -50,6 +50,8 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
     { name: 'Inicio', id: 'hero' },
     { name: 'Carta', id: 'menu' },
     { name: 'Ubicación', id: 'location' },
+    // { name: 'Galería', id: 'gallery' }, // Oculto temporalmente
+    // { name: 'Eventos', id: 'events' }, // Oculto temporalmente
     { name: 'Contacto', id: 'contact' }
   ];
 

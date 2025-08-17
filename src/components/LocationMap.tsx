@@ -48,14 +48,14 @@ const LocationMap: React.FC<LocationMapProps> = ({
   };
 
   return (
-    <section id="location" className="relative bg-black text-white py-24 overflow-hidden">
+    <section id="location" className="relative bg-zinc-950 text-white py-24 overflow-hidden">
       {/* Subtle animated background elements */}
       <div className="absolute inset-0">
         <motion.div
-          className="absolute top-20 left-1/4 w-32 h-32 bg-white/[0.02] rounded-full blur-xl"
+          className="absolute top-20 left-1/4 w-32 h-32 bg-white/[0.03] rounded-full blur-xl"
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.02, 0.04, 0.02],
+            opacity: [0.03, 0.06, 0.03],
           }}
           transition={{
             duration: 8,
@@ -64,10 +64,10 @@ const LocationMap: React.FC<LocationMapProps> = ({
           }}
         />
         <motion.div
-          className="absolute bottom-32 right-1/3 w-24 h-24 bg-white/[0.03] rounded-full blur-2xl"
+          className="absolute bottom-32 right-1/3 w-24 h-24 bg-white/[0.04] rounded-full blur-2xl"
           animate={{
             scale: [1.1, 1, 1.1],
-            opacity: [0.03, 0.01, 0.03],
+            opacity: [0.04, 0.02, 0.04],
           }}
           transition={{
             duration: 6,
@@ -77,10 +77,10 @@ const LocationMap: React.FC<LocationMapProps> = ({
           }}
         />
         <motion.div
-          className="absolute top-1/2 right-20 w-20 h-20 bg-white/[0.02] rounded-full blur-xl"
+          className="absolute top-1/2 right-20 w-20 h-20 bg-white/[0.03] rounded-full blur-xl"
           animate={{
             y: [-10, 10, -10],
-            opacity: [0.02, 0.04, 0.02],
+            opacity: [0.03, 0.05, 0.03],
           }}
           transition={{
             duration: 10,
@@ -117,7 +117,7 @@ const LocationMap: React.FC<LocationMapProps> = ({
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="aspect-square relative overflow-hidden rounded-lg border border-white/10 group">
+            <div className="aspect-square relative overflow-hidden rounded-lg border border-white/20 group">
               <iframe
                 src={mapUrl}
                 className="absolute inset-0 w-full h-full transition-all duration-500 group-hover:scale-105"
@@ -128,7 +128,7 @@ const LocationMap: React.FC<LocationMapProps> = ({
                 title="Ego House Location"
               />
               {/* Subtle hover overlay */}
-              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.02] transition-all duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.03] transition-all duration-500 pointer-events-none" />
             </div>
           </motion.div>
 
