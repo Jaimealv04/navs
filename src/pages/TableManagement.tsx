@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Table, Reservation } from '../data/tableData';
+import type { Table } from '../data/tableData';
 import { mockTables, mockReservations } from '../data/tableData';
 import TableComponent from '../components/admin/TableComponent';
 import {

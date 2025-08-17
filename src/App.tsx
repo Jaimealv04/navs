@@ -17,11 +17,6 @@ function App() {
     setCurrentPage(getPageFromURL())
   })
 
-  const navigateToAdmin = () => {
-    window.history.pushState({}, '', '/admin')
-    setCurrentPage('admin')
-  }
-
   const navigateToHome = () => {
     window.history.pushState({}, '', '/')
     setCurrentPage('home')
