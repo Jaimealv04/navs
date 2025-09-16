@@ -76,8 +76,8 @@ const LandingPage: React.FC = () => {
         >
           {/* Cloudinary Video Background */}
           <CloudinaryVideoBackground
-            cloudinaryUrl="https://res.cloudinary.com/dm70hhhnm/video/upload/f_auto,q_auto/Portada_1080_1_lmhnpo.mp4"
-            posterImage="https://res.cloudinary.com/dm70hhhnm/image/upload/f_auto,q_auto/Portada_1080_1_lmhnpo.jpg"
+            cloudinaryUrl="https://res.cloudinary.com/dm70hhhnm/video/upload/f_auto,q_auto/Portada_1080_editada_bflw9o.mp4"
+            posterImage="https://res.cloudinary.com/dm70hhhnm/image/upload/f_auto,q_auto/Portada_1080_editada_bflw9o.jpg"
             ariaLabel="Video de ambiente de EGO HOUSE Madrid"
           />{' '}
           {/* Main Content */}
