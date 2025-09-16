@@ -6,6 +6,7 @@ interface DeviceInfo {
   shouldUseStaticMedia: boolean;
   hasSlowConnection: boolean;
   prefersReducedData: boolean;
+  prefersReducedMotion: boolean;
 }
 
 export const useDeviceDetection = (): DeviceInfo => {
@@ -15,6 +16,7 @@ export const useDeviceDetection = (): DeviceInfo => {
     shouldUseStaticMedia: false,
     hasSlowConnection: false,
     prefersReducedData: false,
+    prefersReducedMotion: false,
   });
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export const useDeviceDetection = (): DeviceInfo => {
       // Detectar conexión lenta y ahorro de datos
       let hasSlowConnection = false;
       let prefersReducedData = false;
+      let prefersReducedMotion = false;
 
       if ('connection' in navigator) {
         const connection = navigator.connection as {
@@ -59,6 +62,12 @@ export const useDeviceDetection = (): DeviceInfo => {
           isLowPerformance =
             isLowPerformance || hasSlowConnection || prefersReducedData;
         }
+      }
+
+      if (window.matchMedia) {
+        prefersReducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        ).matches;
       }
 
       // Detectar si la batería está baja (modo ahorro de energía)
@@ -82,7 +91,11 @@ export const useDeviceDetection = (): DeviceInfo => {
 
       // Determinar si usar medios estáticos
       const shouldUseStaticMedia =
-        isMobile || isLowPerformance || hasSlowConnection || prefersReducedData;
+        isMobile ||
+        isLowPerformance ||
+        hasSlowConnection ||
+        prefersReducedData ||
+        prefersReducedMotion;
 
       setDeviceInfo({
         isMobile,
@@ -90,6 +103,7 @@ export const useDeviceDetection = (): DeviceInfo => {
         shouldUseStaticMedia,
         hasSlowConnection,
         prefersReducedData,
+        prefersReducedMotion,
       });
     };
 
