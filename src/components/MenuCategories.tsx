@@ -9,7 +9,7 @@ interface MenuCategory {
   icon: React.ReactNode;
   gradient: string;
   count: number;
-  image?: string;
+  accents: string[];
 }
 
 interface MenuCategoriesProps {
@@ -25,7 +25,7 @@ const MenuCategories: React.FC<MenuCategoriesProps> = ({ onCategorySelect }) => 
       icon: <Sparkles className="w-8 h-8" />,
       gradient: 'from-purple-600 via-indigo-600 to-blue-600',
       count: 25,
-      image: '/hookas.jpg'
+      accents: ['bg-fuchsia-400/40', 'bg-indigo-400/40', 'bg-blue-500/30']
     },
     {
       id: 'comida',
@@ -34,7 +34,7 @@ const MenuCategories: React.FC<MenuCategoriesProps> = ({ onCategorySelect }) => 
       icon: <Utensils className="w-8 h-8" />,
       gradient: 'from-orange-500 via-red-500 to-pink-500',
       count: 15,
-      image: '/comida.jpg'
+      accents: ['bg-amber-300/40', 'bg-rose-400/40', 'bg-orange-400/30']
     },
     {
       id: 'bebida',
@@ -43,7 +43,7 @@ const MenuCategories: React.FC<MenuCategoriesProps> = ({ onCategorySelect }) => 
       icon: <Coffee className="w-8 h-8" />,
       gradient: 'from-green-500 via-teal-500 to-cyan-500',
       count: 12,
-      image: '/bebida.jpg'
+      accents: ['bg-emerald-300/40', 'bg-cyan-400/40', 'bg-teal-500/30']
     }
   ];
 
@@ -108,24 +108,31 @@ const MenuCategories: React.FC<MenuCategoriesProps> = ({ onCategorySelect }) => 
               y: -4,
               transition: { type: "spring", stiffness: 400, damping: 25 }
             }}
-            onMouseEnter={() => {}}
-            onMouseLeave={() => {}}
             onClick={() => onCategorySelect(category.id)}
             className="group relative cursor-pointer overflow-hidden"
           >
-            {/* Background Image */}
+            {/* Background Illustration */}
             <div className="absolute inset-0 rounded-2xl overflow-hidden">
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                onError={(e) => {
-                  console.error(`Error loading image: ${category.image}`);
-                  e.currentTarget.style.display = 'none';
-                }}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-90 transition-transform duration-500 group-hover:scale-105`}
               />
-              {/* Subtle overlay */}
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300" />
+              {category.accents.map((accent, index) => (
+                <div
+                  key={index}
+                  className={`absolute rounded-full blur-3xl ${accent} transition-transform duration-500 group-hover:scale-110`}
+                  style={{
+                    width: index === 0 ? '16rem' : index === 1 ? '14rem' : '12rem',
+                    height: index === 0 ? '16rem' : index === 1 ? '14rem' : '12rem',
+                    top:
+                      index === 0 ? '-4rem' : index === 1 ? '60%' : 'auto',
+                    left:
+                      index === 0 ? '-3rem' : index === 1 ? 'auto' : '55%',
+                    right: index === 1 ? '-3rem' : 'auto',
+                    bottom: index === 2 ? '-3rem' : 'auto',
+                  }}
+                />
+              ))}
+              <div className="absolute inset-0 bg-black/45 group-hover:bg-black/30 transition-colors duration-300" />
             </div>
 
             {/* Card Content */}

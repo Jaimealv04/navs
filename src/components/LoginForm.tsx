@@ -45,12 +45,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          {/* Background Image */}
+          {/* Background Canvas */}
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: 'url(/hookas.jpg)',
-              transform: 'scale(1.05)'
+              backgroundImage:
+                'radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.45), transparent 55%), radial-gradient(circle at 85% 0%, rgba(14, 165, 233, 0.4), transparent 60%), linear-gradient(135deg, rgba(8, 8, 8, 0.95), rgba(12, 10, 24, 0.85))',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              transform: 'scale(1.02)'
             }}
           />
 
@@ -219,10 +222,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
 
       {/* Mobile Layout - Background image with form overlay */}
       <div className="lg:hidden min-h-screen relative">
-        {/* Background Image */}
+        {/* Background Canvas */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(/hookas.jpg)' }}
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.45), transparent 55%), radial-gradient(circle at 80% 10%, rgba(6, 182, 212, 0.35), transparent 60%), linear-gradient(160deg, rgba(10, 10, 10, 0.95), rgba(15, 23, 42, 0.9))',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+          }}
         />
 
         {/* Blur Overlay */}

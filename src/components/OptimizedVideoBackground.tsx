@@ -26,6 +26,7 @@ const OptimizedVideoBackground: React.FC<OptimizedVideoBackgroundProps> = ({
     isLowPerformance,
     hasSlowConnection,
     prefersReducedData,
+    prefersReducedMotion,
   } = useDeviceDetection();
   const [manualMode, setManualMode] = useState<'auto' | 'video' | 'image'>(
     'auto'
@@ -88,7 +89,8 @@ const OptimizedVideoBackground: React.FC<OptimizedVideoBackgroundProps> = ({
               (isMobile ||
                 isLowPerformance ||
                 hasSlowConnection ||
-                prefersReducedData) && (
+                prefersReducedData ||
+                prefersReducedMotion) && (
                 <div className="absolute bottom-4 left-4 z-10">
                   <div className="bg-black/50 backdrop-blur-sm text-white text-xs px-2 py-1 rounded">
                     📱 Modo optimizado{' '}
@@ -98,6 +100,8 @@ const OptimizedVideoBackground: React.FC<OptimizedVideoBackgroundProps> = ({
                       ? '(Conexión lenta)'
                       : prefersReducedData
                       ? '(Ahorro datos)'
+                      : prefersReducedMotion
+                      ? '(Menos animaciones)'
                       : '(Bajo rendimiento)'}
                   </div>
                 </div>
