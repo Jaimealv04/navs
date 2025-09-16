@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { Table } from '../data/tableData';
 import { mockTables, mockReservations } from '../data/tableData';
 import TableComponent from '../components/admin/TableComponent';
+import { useAuth } from '../hooks/useAuth';
 import {
   ZoomIn,
   ZoomOut,
@@ -13,7 +14,9 @@ import {
   Search,
   Plus,
   BarChart3,
-  MapPin
+  MapPin,
+  LogOut,
+  User
 } from 'lucide-react';
 
 const TableManagement: React.FC = () => {
@@ -25,6 +28,7 @@ const TableManagement: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [showStats, setShowStats] = useState(false);
+  const { user, logout } = useAuth();
 
   const zones = [
     { id: 'all', name: 'Todas las zonas', color: '#6B7280' },
@@ -74,6 +78,12 @@ const TableManagement: React.FC = () => {
 
   const todayReservations = mockReservations.filter(res => res.date === selectedDate);
 
+  const handleLogout = () => {
+    logout();
+    window.history.pushState({}, '', '/');
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -85,6 +95,14 @@ const TableManagement: React.FC = () => {
               <p className="text-gray-600">EGO HOUSE Madrid - Panel de Administración</p>
             </div>
             <div className="flex items-center gap-4">
+              {/* Información del usuario */}
+              <div className="flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-lg">
+                <User className="w-5 h-5 text-gray-600" />
+                <div className="text-sm">
+                  <div className="font-medium text-gray-900">{user?.name || user?.email}</div>
+                  <div className="text-gray-500 capitalize">{user?.role}</div>
+                </div>
+              </div>
               <button
                 onClick={() => setShowStats(!showStats)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -98,6 +116,14 @@ const TableManagement: React.FC = () => {
               >
                 <Plus className="w-4 h-4" />
                 Nueva Reserva
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                title="Cerrar Sesión"
+              >
+                <LogOut className="w-4 h-4" />
+                Salir
               </button>
             </div>
           </div>

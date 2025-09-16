@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 interface LoginFormProps {
   onBack: () => void;
@@ -12,10 +13,49 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { login, register } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Auth attempt:', { email, password, isLogin, name });
+    setError('');
+    setIsLoading(true);
+
+    if (!email || !password) {
+      setError('Por favor completa todos los campos');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!isLogin && password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      if (isLogin) {
+        await login(email, password);
+      } else {
+        await register(email, password, name);
+      }
+      // El hook de auth manejará la redirección automáticamente
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error de autenticación');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fillTestCredentials = (type: 'admin' | 'user') => {
+    if (type === 'admin') {
+      setEmail('admin@example.com');
+      setPassword('admin123');
+    } else {
+      setEmail('user@example.com');
+      setPassword('user123');
+    }
   };
 
   return (
@@ -59,8 +99,46 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
           </motion.p>
         </div>
 
+        {/* Botones de credenciales de prueba - solo en modo login */}
+        {isLogin && (
+          <motion.div 
+            className="grid grid-cols-2 gap-4 mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <button
+              type="button"
+              onClick={() => fillTestCredentials('admin')}
+              className="px-4 py-3 bg-red-600/20 text-red-400 border border-red-400/30 rounded-lg text-sm hover:bg-red-600/30 transition-colors font-medium"
+            >
+              🔑 Admin Test
+            </button>
+            <button
+              type="button"
+              onClick={() => fillTestCredentials('user')}
+              className="px-4 py-3 bg-blue-600/20 text-blue-400 border border-blue-400/30 rounded-lg text-sm hover:bg-blue-600/30 transition-colors font-medium"
+            >
+              👤 User Test
+            </button>
+          </motion.div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Error message */}
+          {error && (
+            <motion.div 
+              className="bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <div className="flex items-center space-x-2">
+                <span>⚠️</span>
+                <span>{error}</span>
+              </div>
+            </motion.div>
+          )}
           {/* Name field - only for registration */}
           {!isLogin && (
             <motion.div
@@ -122,14 +200,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
           {/* Submit button */}
           <motion.button
             type="submit"
-            className="w-full py-3 bg-white text-black rounded-lg font-medium hover:bg-white/90 transition-all duration-300"
+            disabled={isLoading}
+            className="w-full py-3 bg-white text-black rounded-lg font-medium hover:bg-white/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: isLogin ? 0.6 : 0.7 }}
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
           >
-            {isLogin ? 'Acceder' : 'Crear cuenta'}
+            {isLoading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
+                <span>{isLogin ? 'Iniciando sesión...' : 'Creando cuenta...'}</span>
+              </div>
+            ) : (
+              isLogin ? 'Acceder' : 'Crear cuenta'
+            )}
           </motion.button>
         </form>
 

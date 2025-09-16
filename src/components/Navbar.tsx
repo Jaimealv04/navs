@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 interface NavbarProps {
   onLoginClick: () => void;
@@ -9,6 +10,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
 
   // Hook para detectar el scroll
   useEffect(() => {
@@ -102,15 +104,51 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
               ))}
             </div>
 
-            {/* Desktop Login Button - Más minimalista */}
-            <motion.button
-              onClick={onLoginClick}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="hidden md:block px-6 py-2 text-white border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300 text-sm font-medium"
-            >
-              Acceder
-            </motion.button>
+            {/* Desktop Login/User Menu */}
+            <div className="hidden md:flex items-center gap-4">
+              {isAuthenticated ? (
+                <>
+                  <div className="flex items-center gap-2 text-white/70">
+                    <User className="w-4 h-4" />
+                    <span className="text-sm">{user?.name || user?.email}</span>
+                    {user?.role === 'admin' && (
+                      <span className="px-2 py-1 bg-red-600/20 text-red-400 text-xs rounded-full">Admin</span>
+                    )}
+                  </div>
+                  {user?.role === 'admin' && (
+                    <motion.button
+                      onClick={() => {
+                        window.history.pushState({}, '', '/admin');
+                        window.location.reload();
+                      }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-4 py-2 bg-gray-900/50 text-white border border-white/20 rounded-full hover:bg-gray-900/70 transition-all duration-300 text-sm font-medium"
+                    >
+                      Admin Panel
+                    </motion.button>
+                  )}
+                  <motion.button
+                    onClick={logout}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center gap-2 px-4 py-2 text-white/70 hover:text-white transition-colors duration-300 text-sm"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Salir
+                  </motion.button>
+                </>
+              ) : (
+                <motion.button
+                  onClick={onLoginClick}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-6 py-2 text-white border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300 text-sm font-medium"
+                >
+                  Acceder
+                </motion.button>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <motion.button
@@ -176,17 +214,54 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
                   ))}
                 </div>
 
-                {/* Login Button */}
-                <motion.button
-                  onClick={() => {
-                    onLoginClick();
-                    setMobileMenuOpen(false);
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  className="w-full border border-white/20 text-white py-3 px-6 rounded-full hover:bg-white/5 transition-all duration-300"
-                >
-                  Acceder
-                </motion.button>
+                {/* Login/User Section */}
+                <div className="space-y-4">
+                  {isAuthenticated ? (
+                    <>
+                      <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg">
+                        <User className="w-5 h-5 text-white/70" />
+                        <div>
+                          <div className="text-white text-sm font-medium">{user?.name || user?.email}</div>
+                          <div className="text-white/60 text-xs capitalize">{user?.role}</div>
+                        </div>
+                      </div>
+                      {user?.role === 'admin' && (
+                        <motion.button
+                          onClick={() => {
+                            window.history.pushState({}, '', '/admin');
+                            window.location.reload();
+                          }}
+                          whileHover={{ scale: 1.02 }}
+                          className="w-full bg-gray-900/50 text-white py-3 px-6 rounded-full hover:bg-gray-900/70 transition-all duration-300"
+                        >
+                          Admin Panel
+                        </motion.button>
+                      )}
+                      <motion.button
+                        onClick={() => {
+                          logout();
+                          setMobileMenuOpen(false);
+                        }}
+                        whileHover={{ scale: 1.02 }}
+                        className="w-full flex items-center justify-center gap-2 border border-red-400/30 text-red-400 py-3 px-6 rounded-full hover:bg-red-600/10 transition-all duration-300"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Cerrar Sesión
+                      </motion.button>
+                    </>
+                  ) : (
+                    <motion.button
+                      onClick={() => {
+                        onLoginClick();
+                        setMobileMenuOpen(false);
+                      }}
+                      whileHover={{ scale: 1.02 }}
+                      className="w-full border border-white/20 text-white py-3 px-6 rounded-full hover:bg-white/5 transition-all duration-300"
+                    >
+                      Acceder
+                    </motion.button>
+                  )}
+                </div>
               </div>
             </motion.div>
           </>

@@ -3,33 +3,40 @@ import { apiClient } from '../utils/api-client';
 import { TokenManager } from '../utils/token-manager';
 
 class AuthService {
-  // Credenciales de prueba locales
+  // Credenciales de prueba locales (fallback)
   private mockUsers = [
     { 
       id: '1', 
-      email: 'admin@test.com', 
+      email: 'admin@example.com', 
       password: 'admin123', 
       role: 'admin' as const,
-      name: 'Administrador' 
+      name: 'Admin User' 
     },
     { 
       id: '2', 
-      email: 'user@test.com', 
+      email: 'user@example.com', 
       password: 'user123', 
       role: 'user' as const,
-      name: 'Usuario' 
+      name: 'Regular User' 
     }
   ];
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       // Intentar autenticación con backend
-      const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
-      TokenManager.setToken(response.token);
-      TokenManager.setUser(response.user);
-      return response;
+      const response = await apiClient.post<{ access_token: string; user: User }>('/auth/login', credentials);
+      
+      // Adaptar la respuesta del backend al formato esperado
+      const authResponse: AuthResponse = {
+        token: response.access_token,
+        user: response.user
+      };
+      
+      TokenManager.setToken(authResponse.token);
+      TokenManager.setUser(authResponse.user);
+      return authResponse;
     } catch (error) {
-      console.warn('Backend no disponible, usando autenticación local');
+      console.warn('Backend no disponible, usando autenticación local:', error);
       
       // Fallback a autenticación local
       const mockUser = this.mockUsers.find(
@@ -58,14 +65,22 @@ class AuthService {
 
   async register(data: RegisterData): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>('/auth/register', data);
-      TokenManager.setToken(response.token);
-      TokenManager.setUser(response.user);
-      return response;
-    } catch (error) {
-      console.warn('Backend no disponible, usando registro local');
+      // Intentar registro con backend
+      const response = await apiClient.post<{ access_token: string; user: User }>('/auth/register', data);
       
-      // Verificar si el email ya existe
+      // Adaptar la respuesta del backend al formato esperado
+      const authResponse: AuthResponse = {
+        token: response.access_token,
+        user: response.user
+      };
+      
+      TokenManager.setToken(authResponse.token);
+      TokenManager.setUser(authResponse.user);
+      return authResponse;
+    } catch (error) {
+      console.warn('Backend no disponible, usando registro local:', error);
+      
+      // Verificar si el email ya existe en el mock
       if (this.mockUsers.some(user => user.email === data.email)) {
         throw new Error('El email ya está registrado');
       }
@@ -74,10 +89,19 @@ class AuthService {
         id: Date.now().toString(),
         email: data.email,
         role: 'user',
-        name: data.name
+        name: data.name || 'Usuario'
       };
 
       const token = 'mock-token-' + Date.now();
+      
+      // Agregar usuario al mock para futuras referencias
+      this.mockUsers.push({
+        id: user.id,
+        email: user.email,
+        password: 'mock-password',
+        role: 'user',
+        name: user.name || 'Usuario'
+      });
       
       TokenManager.setToken(token);
       TokenManager.setUser(user);
@@ -103,11 +127,12 @@ class AuthService {
     }
 
     try {
-      const user = await apiClient.get<User>('/auth/me');
+      // Intentar obtener el usuario actual del backend
+      const user = await apiClient.get<User>('/auth/profile');
       TokenManager.setUser(user);
       return user;
     } catch (error) {
-      console.warn('No se pudo verificar usuario con backend');
+      console.warn('No se pudo verificar usuario con backend:', error);
       return null;
     }
   }
