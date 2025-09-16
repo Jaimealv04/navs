@@ -44,10 +44,14 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
           // Esperar a que esté listo
           await new Promise((resolve, reject) => {
             const timer = setTimeout(() => reject(new Error('Timeout')), 3000);
-            video.addEventListener('loadeddata', () => {
-              clearTimeout(timer);
-              resolve(void 0);
-            }, { once: true });
+            video.addEventListener(
+              'loadeddata',
+              () => {
+                clearTimeout(timer);
+                resolve(void 0);
+              },
+              { once: true }
+            );
           });
         }
 
@@ -56,13 +60,13 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
         if (playPromise !== undefined) {
           await playPromise;
         }
-        
+
         setShowFallback(false);
         console.log('Video autoplay successful');
       } catch (err) {
         console.log('Autoplay failed, showing fallback:', err);
         setShowFallback(true);
-        
+
         // En móviles, configurar para activar en primera interacción
         const mobile = checkMobile();
         if (mobile && !hasUserInteracted) {
@@ -183,7 +187,9 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
             <div className="text-4xl">▶️</div>
             <div className="text-center">
               <div className="text-lg font-semibold">Video de fondo</div>
-              <div className="text-sm opacity-90">Toca cualquier lugar para activar</div>
+              <div className="text-sm opacity-90">
+                Toca cualquier lugar para activar
+              </div>
             </div>
           </div>
         </div>
