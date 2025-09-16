@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, Eye, EyeOff } from 'lucide-react';
+import { ChevronLeft, Eye, EyeOff, User, Lock, Mail } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 interface LoginFormProps {
@@ -145,14 +145,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
+              className="relative"
             >
+              <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 bg-transparent border border-white/20 rounded-lg focus:border-white focus:outline-none transition-all duration-300"
+                className="w-full pl-12 pr-4 py-3 bg-transparent border border-white/20 rounded-lg focus:border-white focus:outline-none transition-all duration-300"
                 placeholder="Nombre completo"
-                required
               />
             </motion.div>
           )}
@@ -162,12 +163,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: isLogin ? 0.4 : 0.5 }}
+            className="relative"
           >
+            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-transparent border border-white/20 rounded-lg focus:border-white focus:outline-none transition-all duration-300"
+              className="w-full pl-12 pr-4 py-3 bg-transparent border border-white/20 rounded-lg focus:border-white focus:outline-none transition-all duration-300"
               placeholder="Email"
               required
             />
@@ -180,11 +183,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: isLogin ? 0.5 : 0.6 }}
           >
+            <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50 w-5 h-5" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 pr-12 bg-transparent border border-white/20 rounded-lg focus:border-white focus:outline-none transition-all duration-300"
+              className="w-full pl-12 pr-12 py-3 bg-transparent border border-white/20 rounded-lg focus:border-white focus:outline-none transition-all duration-300"
               placeholder="Contraseña"
               required
             />
