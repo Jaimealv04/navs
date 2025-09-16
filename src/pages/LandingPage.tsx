@@ -7,6 +7,7 @@ import LocationMap from '../components/LocationMap';
 import Footer from '../components/Footer';
 import MenuCategories from '../components/MenuCategories';
 import MenuCarousel from '../components/MenuCarousel';
+import CloudinaryVideoBackground from '../components/CloudinaryVideoBackground';
 // import Gallery from '../components/Gallery'; // Oculto temporalmente
 // import Events from '../components/Events'; // Oculto temporalmente
 import SEOHead from '../components/SEOHead';
@@ -32,9 +33,9 @@ const LandingPage: React.FC = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -43,9 +44,9 @@ const LandingPage: React.FC = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8
-      }
-    }
+        duration: 0.8,
+      },
+    },
   };
 
   if (showSurvey) {
@@ -71,23 +72,16 @@ const LandingPage: React.FC = () => {
 
       {/* Hero Section with Video Background */}
       <main>
-        <section id="hero" className="relative min-h-screen overflow-hidden bg-black flex items-center">
-          {/* Video Background */}
-          <div className="absolute inset-0 z-0">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover opacity-60"
-              aria-label="Video de ambiente de EGO HOUSE Madrid"
-            >
-              <source src="/hero-video.mp4" type="video/mp4" />
-              <track kind="captions" src="/captions.vtt" srcLang="es" label="Español" />
-            </video>
-            <div className="absolute inset-0 bg-black/30" />
-          </div>
-
+        <section
+          id="hero"
+          className="relative min-h-screen overflow-hidden bg-black flex items-center"
+        >
+          {/* Cloudinary Video Background */}
+          <CloudinaryVideoBackground
+            cloudinaryUrl="https://res.cloudinary.com/dm70hhhnm/video/upload/f_auto,q_auto/Portada_1080_1_lmhnpo.mp4"
+            posterImage="https://res.cloudinary.com/dm70hhhnm/image/upload/f_auto,q_auto/Portada_1080_1_lmhnpo.jpg"
+            ariaLabel="Video de ambiente de EGO HOUSE Madrid"
+          />{' '}
           {/* Main Content */}
           <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-8">
             <motion.div
@@ -127,57 +121,69 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
-    {/* Menu Categories and Carousel Section */}
-    <section id="menu" className="relative bg-black py-24">
-      {/* Content */}
-      <div className="relative z-10">
-        {!showCarousel ? (
-          <MenuCategories onCategorySelect={handleCategorySelect} />
-        ) : (
-          <div className="space-y-12">
-            {/* Back Button */}
-            <div className="max-w-6xl mx-auto px-6 lg:px-8">
-              <motion.button
-                onClick={() => setShowCarousel(false)}
-                whileHover={{ scale: 1.02 }}
-                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
-              >
-                ← Volver
-              </motion.button>
-            </div>
+        {/* Menu Categories and Carousel Section */}
+        <section id="menu" className="relative bg-black py-10 pb-50">
+          {/* Content */}
+          <div className="relative z-10">
+            {!showCarousel ? (
+              <MenuCategories onCategorySelect={handleCategorySelect} />
+            ) : (
+              <div className="space-y-12">
+                {/* Back Button */}
+                <div className="max-w-6xl mx-auto px-6 lg:px-8">
+                  <motion.button
+                    onClick={() => setShowCarousel(false)}
+                    whileHover={{ scale: 1.02 }}
+                    className="flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
+                  >
+                    ← Volver
+                  </motion.button>
+                </div>
 
-            {/* Menu Carousel */}
-            <MenuCarousel
-              items={selectedCategory === 'cachimba' ? cachimbas :
-                     selectedCategory === 'comida' ? getItemsByCategory('comida') :
-                     selectedCategory === 'bebida' ? getItemsByCategory('bebida') : cachimbas}
-              title={`${selectedCategory === 'cachimba' ? 'Cachimbas' : selectedCategory === 'comida' ? 'Gastronomía' : 'Bebidas'}`}
-              autoPlay={false}
-            />
+                {/* Menu Carousel */}
+                <MenuCarousel
+                  items={
+                    selectedCategory === 'cachimba'
+                      ? cachimbas
+                      : selectedCategory === 'comida'
+                      ? getItemsByCategory('comida')
+                      : selectedCategory === 'bebida'
+                      ? getItemsByCategory('bebida')
+                      : cachimbas
+                  }
+                  title={`${
+                    selectedCategory === 'cachimba'
+                      ? 'Cachimbas'
+                      : selectedCategory === 'comida'
+                      ? 'Gastronomía'
+                      : 'Bebidas'
+                  }`}
+                  autoPlay={false}
+                />
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </section>
+        </section>
 
-    {/* Location Map Section */}
-    <LocationMap />
+        {/* Location Map Section */}
+        <LocationMap />
 
-    {/* Gallery Section - Oculta temporalmente */}
-    {/* <Gallery /> */}
+        {/* Gallery Section - Oculta temporalmente */}
+        {/* <Gallery /> */}
 
-    {/* Events Section - Oculta temporalmente */}
-    {/* <Events /> */}
-    </main>
+        {/* Events Section - Oculta temporalmente */}
+        {/* <Events /> */}
+      </main>
 
-    {/* Footer */}
-    <Footer />
+      {/* Footer */}
+      <Footer />
 
-    {/* WhatsApp Floating Button */}
-    <WhatsAppButton
-      phoneNumber="34123456789"
-      defaultMessage="¡Hola! Me interesa conocer más sobre EGO HOUSE Madrid. ¿Podrían darme información sobre reservas y experiencias disponibles?"
-    />
-  </>
+      {/* WhatsApp Floating Button */}
+      <WhatsAppButton
+        phoneNumber="34123456789"
+        defaultMessage="¡Hola! Me interesa conocer más sobre EGO HOUSE Madrid. ¿Podrían darme información sobre reservas y experiencias disponibles?"
+      />
+    </>
   );
 };
 
