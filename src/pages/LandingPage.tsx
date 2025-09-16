@@ -8,8 +8,6 @@ import Footer from '../components/Footer';
 import MenuCategories from '../components/MenuCategories';
 import MenuCarousel from '../components/MenuCarousel';
 import CloudinaryVideoBackground from '../components/CloudinaryVideoBackground';
-// import Gallery from '../components/Gallery'; // Oculto temporalmente
-// import Events from '../components/Events'; // Oculto temporalmente
 import SEOHead from '../components/SEOHead';
 import WhatsAppButton from '../components/WhatsAppButton';
 import { getItemsByCategory } from '../data/menuData';
