@@ -22,15 +22,19 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
   useEffect(() => {
     const checkMobile = () => {
       const userAgent = navigator.userAgent.toLowerCase();
-      const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent);
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isMobileDevice =
+        /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(
+          userAgent
+        );
+      const isTouchDevice =
+        'ontouchstart' in window || navigator.maxTouchPoints > 0;
       const isSmallScreen = window.innerWidth <= 768;
-      
+
       return isMobileDevice || isTouchDevice || isSmallScreen;
     };
 
     setIsMobile(checkMobile());
-    
+
     // En móviles, empezar siempre con la imagen
     if (checkMobile()) {
       setShowFallback(true);
@@ -63,10 +67,10 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
 
     const handleInteraction = async () => {
       if (hasUserInteracted) return;
-      
+
       setHasUserInteracted(true);
       const video = videoRef.current;
-      
+
       if (!video) return;
 
       try {
@@ -86,9 +90,18 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
     };
 
     // Usar passive listeners para mejor rendimiento
-    document.addEventListener('touchstart', handleInteraction, { passive: true, once: true });
-    document.addEventListener('click', handleInteraction, { passive: true, once: true });
-    document.addEventListener('scroll', handleInteraction, { passive: true, once: true });
+    document.addEventListener('touchstart', handleInteraction, {
+      passive: true,
+      once: true,
+    });
+    document.addEventListener('click', handleInteraction, {
+      passive: true,
+      once: true,
+    });
+    document.addEventListener('scroll', handleInteraction, {
+      passive: true,
+      once: true,
+    });
 
     return () => {
       document.removeEventListener('touchstart', handleInteraction);
@@ -112,7 +125,7 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
         aria-label={ariaLabel}
         preload={isMobile ? 'none' : 'metadata'}
         webkit-playsinline="true"
-        style={{ 
+        style={{
           zIndex: showFallback ? 1 : 2,
         }}
       >
