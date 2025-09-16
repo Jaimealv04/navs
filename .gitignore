@@ -1,5 +1,14 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 # Dependencies
-node_modules/
+node_modules
 .pnp
 .pnp.js
 
@@ -9,6 +18,7 @@ coverage/
 # Production
 build/
 dist/
+dist-ssr
 
 # Environment variables
 .env
@@ -16,13 +26,6 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
 # Runtime data
 pids
@@ -51,7 +54,6 @@ pids
 
 # Nuxt.js build / generate output
 .nuxt
-dist/
 
 # Gatsby files
 .cache/
@@ -59,7 +61,6 @@ public
 
 # Vite
 .vite/
-dist-ssr
 *.local
 
 # Rollup
@@ -68,6 +69,19 @@ dist-ssr
 # Temporary folders
 tmp/
 temp/
+
+# Large video files - should be served from CDN in production
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Large images - optimize and serve from CDN
+*.psd
+*.ai
+*.sketch
+*.fig
 
 # Editor directories and files
 .vscode/*
@@ -79,6 +93,29 @@ temp/
 *.njsproj
 *.sln
 *.sw?
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 # OS generated files
 Thumbs.db
