@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import SurveyForm from '../components/SurveyForm';
 import LoginForm from '../components/LoginForm';
@@ -17,6 +17,33 @@ const LandingPage: React.FC = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showCarousel, setShowCarousel] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+  // Detectar móvil/tablet para desactivar animaciones
+  useEffect(() => {
+    const checkMobileOrTablet = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileDevice =
+        /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(
+          userAgent
+        );
+      const isTouchDevice =
+        'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth <= 1024;
+
+      return isMobileDevice || isTouchDevice || isSmallScreen;
+    };
+
+    setIsMobileOrTablet(checkMobileOrTablet());
+
+    // Re-evaluar en cambio de tamaño de ventana
+    const handleResize = () => {
+      setIsMobileOrTablet(checkMobileOrTablet());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
@@ -25,27 +52,32 @@ const LandingPage: React.FC = () => {
 
   const cachimbas = getItemsByCategory('cachimba');
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  // Animaciones condicionadas - solo en desktop
+  const containerVariants = isMobileOrTablet
+    ? undefined
+    : {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2,
+          },
+        },
+      };
 
-  const itemVariants = {
-    hidden: { y: 60, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-      },
-    },
-  };
+  const itemVariants = isMobileOrTablet
+    ? undefined
+    : {
+        hidden: { y: 60, opacity: 0 },
+        visible: {
+          y: 0,
+          opacity: 1,
+          transition: {
+            duration: 0.8,
+          },
+        },
+      };
 
   if (showSurvey) {
     return <SurveyForm onBack={() => setShowSurvey(false)} />;
@@ -78,6 +110,7 @@ const LandingPage: React.FC = () => {
           <CloudinaryVideoBackground
             cloudinaryUrl="https://res.cloudinary.com/dm70hhhnm/video/upload/f_auto,q_auto/Portada_1080_editada_bflw9o.mp4"
             posterImage="https://res.cloudinary.com/dm70hhhnm/image/upload/f_auto,q_auto/Portada_1080_editada_bflw9o.jpg"
+            mobileImage="/HomeMobile.png"
             ariaLabel="Video de ambiente de EGO HOUSE Madrid"
           />{' '}
           {/* Main Content */}
@@ -85,8 +118,8 @@ const LandingPage: React.FC = () => {
             <motion.div
               className="text-center"
               variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+              initial={isMobileOrTablet ? false : 'hidden'}
+              animate={isMobileOrTablet ? false : 'visible'}
             >
               {/* Main Heading */}
               <motion.h1

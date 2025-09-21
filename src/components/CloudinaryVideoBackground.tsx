@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 interface CloudinaryVideoBackgroundProps {
   cloudinaryUrl: string;
   posterImage: string;
+  mobileImage?: string;
   className?: string;
   ariaLabel?: string;
 }
@@ -10,17 +11,18 @@ interface CloudinaryVideoBackgroundProps {
 const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
   cloudinaryUrl,
   posterImage,
+  mobileImage = '/HomeMobile.png',
   className = '',
   ariaLabel = 'Video de fondo de EGO HOUSE Madrid',
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [showFallback, setShowFallback] = useState(false); // Empezar intentando el video
+  const [showFallback, setShowFallback] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
-  // Detectar si es móvil
+  // Detectar si es móvil o tablet
   useEffect(() => {
-    const checkMobile = () => {
+    const checkMobileOrTablet = () => {
       const userAgent = navigator.userAgent.toLowerCase();
       const isMobileDevice =
         /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(
@@ -28,11 +30,22 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
         );
       const isTouchDevice =
         'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isSmallScreen = window.innerWidth <= 768;
+      const isSmallScreen = window.innerWidth <= 1024; // Incluir tablets
 
       return isMobileDevice || isTouchDevice || isSmallScreen;
     };
 
+    const mobile = checkMobileOrTablet();
+    setIsMobileOrTablet(mobile);
+
+    // Si es móvil o tablet, mostrar imagen directamente (sin video)
+    if (mobile) {
+      setShowFallback(true);
+      console.log('Mobile/Tablet detected, using static image');
+      return;
+    }
+
+    // Solo en desktop intentar autoplay del video
     const attemptAutoplay = async () => {
       const video = videoRef.current;
       if (!video) return;
@@ -66,22 +79,14 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
       } catch (err) {
         console.log('Autoplay failed, showing fallback:', err);
         setShowFallback(true);
-
-        // En móviles, configurar para activar en primera interacción
-        const mobile = checkMobile();
-        if (mobile && !hasUserInteracted) {
-          console.log('Mobile detected, waiting for user interaction');
-        }
       }
     };
 
-    setIsMobile(checkMobile());
-
-    // Intentar autoplay en todos los dispositivos primero
+    // Solo intentar autoplay en desktop
     setTimeout(() => {
       attemptAutoplay();
-    }, 500); // Un poco más de tiempo para que el video se cargue
-  }, [hasUserInteracted]);
+    }, 500);
+  }, []);
 
   useEffect(() => {
     // Solo escuchar interacciones si no hemos interactuado ya
@@ -134,66 +139,57 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
 
   return (
     <div className={`absolute inset-0 z-0 ${className}`}>
-      {/* Video element */}
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster={posterImage}
-        className={`w-full h-full object-cover transition-opacity duration-1000 ${
-          showFallback ? 'opacity-0' : 'opacity-100'
-        }`}
-        aria-label={ariaLabel}
-        preload="auto"
-        webkit-playsinline="true"
-        crossOrigin="anonymous"
-        style={{
-          zIndex: showFallback ? 1 : 2,
-        }}
-        onCanPlay={() => {
-          // Intentar reproducir cuando el video esté listo
-          const video = videoRef.current;
-          if (video && video.paused && !showFallback) {
-            video.play().catch(() => {
-              setShowFallback(true);
-            });
-          }
-        }}
-        onError={() => {
-          console.log('Video error, showing fallback');
-          setShowFallback(true);
-        }}
-      >
-        <source src={cloudinaryUrl} type="video/mp4" />
-      </video>
+      {/* Video element - Solo se muestra en desktop */}
+      {!isMobileOrTablet && (
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={posterImage}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${
+            showFallback ? 'opacity-0' : 'opacity-100'
+          }`}
+          aria-label={ariaLabel}
+          preload="auto"
+          webkit-playsinline="true"
+          crossOrigin="anonymous"
+          style={{
+            zIndex: showFallback ? 1 : 2,
+          }}
+          onCanPlay={() => {
+            // Intentar reproducir cuando el video esté listo
+            const video = videoRef.current;
+            if (video && video.paused && !showFallback) {
+              video.play().catch(() => {
+                setShowFallback(true);
+              });
+            }
+          }}
+          onError={() => {
+            console.log('Video error, showing fallback');
+            setShowFallback(true);
+          }}
+        >
+          <source src={cloudinaryUrl} type="video/mp4" />
+        </video>
+      )}
 
-      {/* Imagen de fallback que aparece por defecto en móviles */}
+      {/* Imagen de fondo - Móvil/Tablet usa HomeMobile.png, Desktop usa posterImage */}
       <img
-        src={posterImage}
+        src={isMobileOrTablet ? mobileImage : posterImage}
         alt="EGO HOUSE Madrid - Ambiente del lounge"
-        className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ${
-          showFallback ? 'opacity-100' : 'opacity-0'
+        className={`w-full h-full object-cover absolute inset-0 ${
+          isMobileOrTablet
+            ? 'opacity-100' // Siempre visible en móvil/tablet
+            : `transition-opacity duration-1000 ${
+                showFallback ? 'opacity-100' : 'opacity-0'
+              }`
         }`}
-        style={{ zIndex: showFallback ? 2 : 1 }}
+        style={{ zIndex: isMobileOrTablet || showFallback ? 2 : 1 }}
         loading="eager"
       />
-
-      {/* Indicador más prominente para móviles */}
-      {showFallback && isMobile && !hasUserInteracted && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center">
-          <div className="bg-black/80 backdrop-blur-sm text-white px-6 py-4 rounded-2xl flex flex-col items-center gap-3 shadow-2xl animate-pulse">
-            <div className="text-4xl">▶️</div>
-            <div className="text-center">
-              <div className="text-lg font-semibold">Video de fondo</div>
-              <div className="text-sm opacity-90">
-                Toca cualquier lugar para activar
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Overlay oscuro */}
       <div className="absolute inset-0 bg-black/30 z-10" />
