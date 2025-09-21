@@ -165,7 +165,7 @@ export const mockEvents: Event[] = [
     organizer: 'EGO HOUSE',
     contact: {
       phone: '+34 123 456 789',
-      email: 'eventos@egohouse.es',
+      email: 'eventos@egohousebynavs.com',
       whatsapp: '34123456789',
     },
     requirements: [
@@ -197,7 +197,7 @@ export const mockEvents: Event[] = [
     organizer: 'Chef Miguel & Equipo EGO',
     contact: {
       phone: '+34 123 456 789',
-      email: 'gastronomia@egohouse.es',
+      email: 'gastronomia@egohousebynavs.com',
       whatsapp: '34123456789',
     },
     requirements: [
@@ -229,7 +229,7 @@ export const mockEvents: Event[] = [
     organizer: 'EGO HOUSE Events',
     contact: {
       phone: '+34 123 456 789',
-      email: 'fiestas@egohouse.es',
+      email: 'fiestas@egohousebynavs.com',
       whatsapp: '34123456789',
     },
     requirements: [
@@ -262,7 +262,7 @@ export const mockEvents: Event[] = [
     organizer: 'Master Ahmed - Experto Internacional',
     contact: {
       phone: '+34 123 456 789',
-      email: 'masterclass@egohouse.es',
+      email: 'masterclass@egohousebynavs.com',
       whatsapp: '34123456789',
     },
     requirements: [
@@ -294,7 +294,7 @@ export const mockEvents: Event[] = [
     organizer: 'EGO HOUSE Entertainment',
     contact: {
       phone: '+34 123 456 789',
-      email: 'entretenimiento@egohouse.es',
+      email: 'entretenimiento@egohousebynavs.com',
       whatsapp: '34123456789',
     },
     requirements: [
