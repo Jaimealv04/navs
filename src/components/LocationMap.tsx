@@ -22,18 +22,18 @@ interface LocationMapProps {
 
 const LocationMap: React.FC<LocationMapProps> = ({
   locationInfo = {
-    address: "Calle de Manuel Pombo Angulo 10",
-    city: "Madrid, España",
-    phone: "+34 123 456 789",
+    address: 'Calle de Manuel Pombo Angulo 10',
+    city: 'Madrid, España',
+    phone: '+34 123 456 789',
     hours: {
-      weekdays: "18:00 - 02:00",
-      weekends: "16:00 - 03:00"
+      weekdays: '18:00 - 02:00',
+      weekends: '16:00 - 03:00',
     },
     coordinates: {
       lat: 40.506095,
-      lng: -3.656349
-    }
-  }
+      lng: -3.656349,
+    },
+  },
 }) => {
   // Generate Google Maps embed URL
   const mapUrl = `https://maps.google.com/maps?q=${locationInfo.coordinates.lat},${locationInfo.coordinates.lng}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
@@ -48,9 +48,12 @@ const LocationMap: React.FC<LocationMapProps> = ({
   };
 
   return (
-    <section id="location" className="relative bg-zinc-950 text-white py-24 overflow-hidden">
-      {/* Subtle animated background elements */}
-      <div className="absolute inset-0">
+    <section
+      id="location"
+      className="relative bg-zinc-950 text-white py-24 overflow-hidden"
+    >
+      {/* Subtle animated background elements - Only on desktop */}
+      <div className="absolute inset-0 hidden lg:block">
         <motion.div
           className="absolute top-20 left-1/4 w-32 h-32 bg-white/[0.03] rounded-full blur-xl"
           animate={{
@@ -60,7 +63,7 @@ const LocationMap: React.FC<LocationMapProps> = ({
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: 'easeInOut',
           }}
         />
         <motion.div
@@ -72,8 +75,8 @@ const LocationMap: React.FC<LocationMapProps> = ({
           transition={{
             duration: 6,
             repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
+            ease: 'easeInOut',
+            delay: 2,
           }}
         />
         <motion.div
@@ -85,8 +88,8 @@ const LocationMap: React.FC<LocationMapProps> = ({
           transition={{
             duration: 10,
             repeat: Infinity,
-            ease: "easeInOut",
-            delay: 4
+            ease: 'easeInOut',
+            delay: 4,
           }}
         />
       </div>
@@ -98,7 +101,7 @@ const LocationMap: React.FC<LocationMapProps> = ({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: window.innerWidth >= 1024 ? 0.6 : 0 }}
         >
           <h2 className="text-4xl md:text-5xl font-extralight mb-4 tracking-tight">
             Encuéntranos
@@ -114,7 +117,10 @@ const LocationMap: React.FC<LocationMapProps> = ({
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{
+              duration: window.innerWidth >= 1024 ? 0.6 : 0,
+              delay: window.innerWidth >= 1024 ? 0.2 : 0,
+            }}
             className="relative"
           >
             <div className="aspect-square relative overflow-hidden rounded-lg border border-white/20 group">
@@ -137,13 +143,16 @@ const LocationMap: React.FC<LocationMapProps> = ({
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{
+              duration: window.innerWidth >= 1024 ? 0.6 : 0,
+              delay: window.innerWidth >= 1024 ? 0.4 : 0,
+            }}
             className="space-y-8"
           >
             {/* Address */}
             <motion.div
               className="space-y-3 group"
-              whileHover={{ x: 5 }}
+              whileHover={window.innerWidth >= 1024 ? { x: 5 } : {}}
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-center gap-3">
@@ -159,7 +168,7 @@ const LocationMap: React.FC<LocationMapProps> = ({
             {/* Hours */}
             <motion.div
               className="space-y-3 group"
-              whileHover={{ x: 5 }}
+              whileHover={window.innerWidth >= 1024 ? { x: 5 } : {}}
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-center gap-3">
@@ -169,11 +178,15 @@ const LocationMap: React.FC<LocationMapProps> = ({
               <div className="ml-8 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-white/70">Lunes - Viernes</span>
-                  <span className="text-white">{locationInfo.hours.weekdays}</span>
+                  <span className="text-white">
+                    {locationInfo.hours.weekdays}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-white/70">Sábados - Domingos</span>
-                  <span className="text-white">{locationInfo.hours.weekends}</span>
+                  <span className="text-white">
+                    {locationInfo.hours.weekends}
+                  </span>
                 </div>
               </div>
             </motion.div>
@@ -181,7 +194,7 @@ const LocationMap: React.FC<LocationMapProps> = ({
             {/* Phone */}
             <motion.div
               className="space-y-3 group"
-              whileHover={{ x: 5 }}
+              whileHover={window.innerWidth >= 1024 ? { x: 5 } : {}}
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-center gap-3">
@@ -203,8 +216,8 @@ const LocationMap: React.FC<LocationMapProps> = ({
               <motion.button
                 onClick={handleDirections}
                 className="flex items-center gap-3 px-6 py-3 border border-white/20 rounded-lg hover:border-white/40 transition-all duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={window.innerWidth >= 1024 ? { scale: 1.02 } : {}}
+                whileTap={window.innerWidth >= 1024 ? { scale: 0.98 } : {}}
               >
                 <Navigation className="w-5 h-5" />
                 <span className="font-light">Cómo llegar</span>

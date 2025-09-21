@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import SurveyForm from '../components/SurveyForm';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 import Navbar from '../components/Navbar';
 import LocationMap from '../components/LocationMap';
 import Footer from '../components/Footer';
 import MenuCategories from '../components/MenuCategories';
-import MenuCarousel from '../components/MenuCarousel';
 import CloudinaryVideoBackground from '../components/CloudinaryVideoBackground';
 import SEOHead from '../components/SEOHead';
 import WhatsAppButton from '../components/WhatsAppButton';
-import { getItemsByCategory } from '../data/menuData';
 
 const LandingPage: React.FC = () => {
-  const [showSurvey, setShowSurvey] = useState(false);
+  const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showCarousel, setShowCarousel] = useState(false);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
   // Detectar móvil/tablet para desactivar animaciones
@@ -45,13 +41,6 @@ const LandingPage: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category);
-    setShowCarousel(true);
-  };
-
-  const cachimbas = getItemsByCategory('cachimba');
-
   // Animaciones condicionadas - solo en desktop
   const containerVariants = isMobileOrTablet
     ? undefined
@@ -79,10 +68,6 @@ const LandingPage: React.FC = () => {
         },
       };
 
-  if (showSurvey) {
-    return <SurveyForm onBack={() => setShowSurvey(false)} />;
-  }
-
   if (showLogin) {
     return <LoginForm onBack={() => setShowLogin(false)} />;
   }
@@ -91,9 +76,9 @@ const LandingPage: React.FC = () => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead
-        title="EGO HOUSE Madrid - Experiencia Sensorial Única | Cachimbas Premium"
-        description="Descubre EGO HOUSE, el lounge más exclusivo de Madrid. Cachimbas premium, gastronomía exquisita y ambiente único. Reserva tu experiencia sensorial."
-        keywords="ego house madrid, cachimbas madrid, hookah lounge, gastronomía madrid, experiencia sensorial, lounge exclusivo, cachimba premium"
+        title="EGO HOUSE Madrid | Mejores Teterías Madrid | Fumar Cachimba Centro"
+        description="La mejor tetería de Madrid. Fumar cachimba premium en el centro de Madrid. EGO HOUSE: experiencia única de shisha, gastronomía exquisita y ambiente exclusivo. Reserva ya!"
+        keywords="ego house madrid, mejores teterias madrid, fumar cachimba madrid, tetería madrid centro, cachimba madrid, hookah lounge madrid, donde fumar cachimba madrid, tetería premium madrid, shisha madrid, cachimba centro madrid, hookah bar madrid, tetería moderna madrid, cachimba con comida madrid, mejor cachimba madrid, tetería ambiente madrid"
         url="https://egohouse.es"
       />
 
@@ -140,59 +125,23 @@ const LandingPage: React.FC = () => {
               {/* CTA Button */}
               <motion.button
                 variants={itemVariants}
-                onClick={() => setShowSurvey(true)}
+                onClick={() => navigate('/shisha')}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-white/90 transition-all duration-300"
-                aria-label="Comenzar experiencia personalizada en EGO HOUSE"
+                className="bg-none border-1 border-white text-white px-8 py-3 font-light hover:transition-all duration-300"
+                aria-label="Crear experiencia personalizada de cachimba en EGO HOUSE"
               >
-                Comenzar experiencia
+                Crear experiencia
               </motion.button>
             </motion.div>
           </div>
         </section>
 
-        {/* Menu Categories and Carousel Section */}
+        {/* Menu Categories Section */}
         <section id="menu" className="relative bg-black py-10 pb-50">
           {/* Content */}
           <div className="relative z-10">
-            {!showCarousel ? (
-              <MenuCategories onCategorySelect={handleCategorySelect} />
-            ) : (
-              <div className="space-y-12">
-                {/* Back Button */}
-                <div className="max-w-6xl mx-auto px-6 lg:px-8">
-                  <motion.button
-                    onClick={() => setShowCarousel(false)}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
-                  >
-                    ← Volver
-                  </motion.button>
-                </div>
-
-                {/* Menu Carousel */}
-                <MenuCarousel
-                  items={
-                    selectedCategory === 'cachimba'
-                      ? cachimbas
-                      : selectedCategory === 'comida'
-                      ? getItemsByCategory('comida')
-                      : selectedCategory === 'bebida'
-                      ? getItemsByCategory('bebida')
-                      : cachimbas
-                  }
-                  title={`${
-                    selectedCategory === 'cachimba'
-                      ? 'Cachimbas'
-                      : selectedCategory === 'comida'
-                      ? 'Gastronomía'
-                      : 'Bebidas'
-                  }`}
-                  autoPlay={false}
-                />
-              </div>
-            )}
+            <MenuCategories />
           </div>
         </section>
 
