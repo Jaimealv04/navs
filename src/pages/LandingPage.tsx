@@ -80,6 +80,7 @@ const LandingPage: React.FC = () => {
         description="La mejor tetería de Madrid. Fumar cachimba premium en el centro de Madrid. EGO HOUSE: experiencia única de shisha, gastronomía exquisita y ambiente exclusivo. Reserva ya!"
         keywords="ego house madrid, mejores teterias madrid, fumar cachimba madrid, tetería madrid centro, cachimba madrid, hookah lounge madrid, donde fumar cachimba madrid, tetería premium madrid, shisha madrid, cachimba centro madrid, hookah bar madrid, tetería moderna madrid, cachimba con comida madrid, mejor cachimba madrid, tetería ambiente madrid"
         url="https://egohouse.es"
+        image="https://egohouse.es/hookas.jpg"
       />
 
       {/* Navbar Component */}

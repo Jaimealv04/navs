@@ -12,3 +12,10 @@ Disallow: /.env
 # Allow common crawl paths
 Allow: /assets/
 Allow: /images/
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.svg$
+
+# Allow Google Image Bot
+User-agent: Googlebot-Image
+Allow: /

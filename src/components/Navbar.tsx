@@ -107,9 +107,9 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
               onClick={onLoginClick}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="hidden md:block px-6 py-2 text-white border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300 text-sm font-medium"
+              className="hidden md:block px-6 py-2 text-white  border-white/20 rounded-full hover:bg-white/5 transition-all duration-300 text-sm font-medium"
             >
-              Acceder
+              {/* Login */}
             </motion.button>
 
             {/* Mobile Menu Button */}

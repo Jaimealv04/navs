@@ -13,7 +13,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   title = 'EGO HOUSE - Experiencia Sensorial Única | Cachimbas y Gastronomía Madrid',
   description = 'Descubre EGO HOUSE Madrid, el lugar donde la experiencia sensorial cobra vida. Cachimbas premium, gastronomía exquisita y ambiente único en el corazón de Madrid.',
   keywords = 'ego house, cachimbas madrid, hookah madrid, gastronomía madrid, experiencia sensorial, lounge madrid, cachimba premium, restaurante madrid, ocio nocturno madrid',
-  image = '/og-image.jpg',
+  image = 'https://egohouse.es/hookas.jpg',
   url = 'https://egohouse.es',
   type = 'website',
 }) => {
@@ -56,8 +56,8 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     // Geolocation and Local SEO Meta Tags
     updateMetaTag('geo.region', 'ES-MD');
     updateMetaTag('geo.placename', 'Madrid');
-    updateMetaTag('geo.position', '40.4168;-3.7038');
-    updateMetaTag('ICBM', '40.4168, -3.7038');
+    updateMetaTag('geo.position', '40.4628;-3.6385');
+    updateMetaTag('ICBM', '40.4628, -3.6385');
     updateMetaTag('locality', 'Madrid');
     updateMetaTag('region', 'Comunidad de Madrid');
     updateMetaTag('country-name', 'España');
@@ -66,6 +66,15 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     updateMetaTag('og:title', title, true);
     updateMetaTag('og:description', description, true);
     updateMetaTag('og:image', image, true);
+    updateMetaTag('og:image:secure_url', image, true);
+    updateMetaTag('og:image:type', 'image/jpeg', true);
+    updateMetaTag('og:image:width', '1200', true);
+    updateMetaTag('og:image:height', '630', true);
+    updateMetaTag(
+      'og:image:alt',
+      'EGO HOUSE Madrid - Tetería Premium y Cachimba',
+      true
+    );
     updateMetaTag('og:url', url, true);
     updateMetaTag('og:type', type, true);
     updateMetaTag('og:site_name', 'EGO HOUSE Madrid', true);
@@ -80,6 +89,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
     updateMetaTag('twitter:image', image);
+    updateMetaTag(
+      'twitter:image:alt',
+      'EGO HOUSE Madrid - Tetería Premium y Cachimba'
+    );
 
     // Additional Meta Tags
     updateMetaTag('theme-color', '#000000');
