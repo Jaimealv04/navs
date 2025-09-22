@@ -73,7 +73,7 @@ const ShishaPage: React.FC = () => {
         description="La mejor tetería de Madrid para fumar cachimba. Experiencia personalizada de shisha con tabaco premium, sabores únicos y ambiente exclusivo. Descubre EGO HOUSE!"
         keywords="fumar cachimba madrid, mejores teterias madrid, tetería madrid centro, cachimba madrid, hookah lounge madrid, shisha madrid, donde fumar cachimba madrid, cachimba premium madrid, tetería con ambiente madrid, hookah bar madrid, cachimba personalizada madrid, tabaco cachimba madrid, sabores cachimba madrid, tetería moderna madrid, cachimba centro madrid"
         url="https://egohousebynavs.com/shisha"
-        image="/hookas.jpg"
+        image="https://egohousebynavs.com/hookas.jpg"
       />
       <div className="min-h-screen relative bg-black">
         {/* Background Image */}
@@ -143,15 +143,12 @@ const ShishaPage: React.FC = () => {
                 className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm border border-white/20"
               >
                 <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400 font-['Poppins']">
-                  Sabores Únicos
+                  EGO EXPERIENCE - 20€
                 </h2>
                 <p className="text-white/90 text-lg leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur.
+                  Diseñamos tu mezcla a medida. Nosotros proponemos y tu eliges.
+                  Entran todas las gamas: blond blend, fusion blend y dark
+                  blend, incluyendo algunas referencias de importación.
                 </p>
               </motion.div>
 
@@ -162,15 +159,12 @@ const ShishaPage: React.FC = () => {
                 className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm border border-white/20"
               >
                 <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400 font-['Poppins']">
-                  Ambiente Exclusivo
+                  ALTA INTENSIDAD - 26€
                 </h2>
                 <p className="text-white/90 text-lg leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur.
+                  Vive la experiencia más fuerte con nuestra alta intensidad.
+                  Preparación con cámara de aire, contacto o técnica "Kazan"
+                  para obtener intensidades a partir de 9.
                 </p>
               </motion.div>
 
@@ -181,15 +175,15 @@ const ShishaPage: React.FC = () => {
                 className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm border border-white/20"
               >
                 <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400 font-['Poppins']">
-                  Servicio Premium
+                  WTO EXPERIENCE - 5€ Suplemento
                 </h2>
                 <p className="text-white/90 text-lg leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur.
+                  WTO extract está considerado el producto más premium, gourmet
+                  y exclusivo del mundo, su línea base cuesta a partir de mil
+                  euros el kilo. El producto principal presente en este
+                  compuesto es hoja de puro. En ego house contamos con una
+                  selección de sabores de la marca. Añádelo a tu shisha como
+                  suplemento.
                 </p>
               </motion.div>
             </div>
