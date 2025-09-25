@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://egohousebynavs.com/sitemap.xml
+Sitemap: https://www.egohousebynavs.com/sitemap.xml
 
 # Block access to sensitive areas
 Disallow: /admin/
