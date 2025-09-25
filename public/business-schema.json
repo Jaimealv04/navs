@@ -3,12 +3,12 @@
   "@type": "Restaurant",
   "name": "EGO HOUSE Madrid",
   "description": "La mejor tetería de Madrid para fumar cachimba. Experiencia personalizada de shisha con tabaco premium, sabores únicos y ambiente exclusivo.",
-  "url": "https://egohousebynavs.com",
-  "logo": "https://egohousebynavs.com/Logo.png",
+  "url": "https://www.egohousebynavs.com",
+  "logo": "https://www.egohousebynavs.com/Logo.png",
   "image": [
-    "https://egohousebynavs.com/hookas.jpg",
-    "https://egohousebynavs.com/comida.jpg",
-    "https://egohousebynavs.com/bebida.jpg"
+    "https://www.egohousebynavs.com/hookas.jpg",
+    "https://www.egohousebynavs.com/comida.jpg",
+    "https://www.egohousebynavs.com/bebida.jpg"
   ],
   "address": {
     "@type": "PostalAddress",

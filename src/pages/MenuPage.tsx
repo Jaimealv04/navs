@@ -197,7 +197,7 @@ const MenuPage: React.FC = () => {
             ? ', cachimba madrid, tetería madrid, fumar cachimba madrid, hookah lounge madrid, shisha madrid'
             : ''
         }, restaurante madrid`}
-        url={`https://egohousebynavs.com/menu/${category.slug}`}
+        url={`https://www.egohousebynavs.com/menu/${category.slug}`}
         image="/comida.jpg"
       />
       <div className="min-h-screen relative font-['Poppins']">
