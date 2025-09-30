@@ -85,157 +85,177 @@ export const fullMenuData: MenuData = {
             { name: 'Zumo de naranja', price: 2.5 },
             { name: 'Zumo de piña', price: 2.5 },
             { name: 'Zumo de melocotón', price: 2.5 },
-            { name: 'Mosto', price: 2.5 },
+          ],
+        },
+        {
+          name: 'Ron',
+          items: [
+            { name: 'Barceló añejo', price: 10 },
+            { name: 'Brugal añejo', price: 10 },
+            { name: 'Legendario', price: 10 },
+            { name: 'Havana club 7 años', price: 13 },
+            { name: 'Zacapa', price: 13 },
+            { name: 'Ron Santa Teresa 1796', price: 13 },
+          ],
+        },
+        {
+          name: 'Whisky',
+          items: [
+            { name: 'Johnnie Walker red label', price: 10 },
+            { name: 'Johnnie Walker black label', price: 10 },
+            { name: 'Johnnie Walker green label', price: 13 },
+            { name: 'Johnnie Walker Blue Label', price: 28 },
+            { name: 'Macallan 12 años', price: 25 },
+            { name: "Dewar's 15 años", price: 13 },
+            { name: 'DYC 8 años', price: 13 },
+            { name: 'Cutty sark 12 años', price: 10 },
+            { name: 'J&B', price: 10 },
+          ],
+        },
+        {
+          name: 'Whiskey',
+          items: [{ name: 'Jack Daniels', price: 13 }],
+        },
+        {
+          name: 'Tequila',
+          items: [{ name: 'Don julio Reposado', price: 13 }],
+        },
+        {
+          name: 'Chupitos',
+          items: [
+            { name: 'Don julio Reposado', price: 5 },
+            { name: 'Jägermeister', price: 3.5 },
+            { name: 'Tequila fresa', price: 2.5 },
+          ],
+        },
+        {
+          name: 'Vodka',
+          items: [
+            { name: 'Absolut', price: 10 },
+            { name: 'Ciroc piña', price: 13 },
+            { name: 'Ciroc frutos rojos', price: 13 },
+            { name: 'Ciroc manzana', price: 13 },
+            { name: 'Ciroc normal', price: 13 },
+            { name: 'Belvedere', price: 13 },
+            { name: 'Grey goose', price: 13 },
+          ],
+        },
+        {
+          name: 'Ginebra',
+          items: [
+            { name: "Martin miller's", price: 13 },
+            { name: "Seagram's", price: 10 },
+            { name: 'Tanqueray', price: 10 },
+            { name: 'Larios 12', price: 10 },
+            { name: 'Puerto indias fresa', price: 10 },
+            { name: 'Nordés', price: 13 },
+            { name: 'Masters Gin', price: 10 },
+            { name: "G'vine", price: 13 },
+            { name: 'Bulldog', price: 10 },
+            { name: 'Citadelle', price: 10 },
+            { name: 'London Number 1', price: 10 },
+            { name: 'Ginmare', price: 10 },
+            { name: "Tanqueray 0'0", price: 10 },
+            { name: "Hendrick's", price: 13 },
           ],
         },
         {
           name: 'Vinos',
-          items: [
-            {
-              name: 'Vino blanco Verdejo',
-              variants: [
-                { size: 'copa', price: 4.0 },
-                { size: 'botella', price: 20.0 },
-              ],
-            },
-            {
-              name: 'Vino blanco semidulce',
-              variants: [
-                { size: 'copa', price: 4.0 },
-                { size: 'botella', price: 20.0 },
-              ],
-            },
-            {
-              name: 'Vino tinto Rioja',
-              variants: [
-                { size: 'copa', price: 4.0 },
-                { size: 'botella', price: 20.0 },
-              ],
-            },
-            { name: 'Tinto de verano', price: 3.5 },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Desayunos',
-      slug: 'desayunos',
-      subcategories: [
-        {
-          name: 'Tostas',
-          items: [
-            { name: 'Tosta de aguacate con salmón', price: 6.0 },
-            { name: 'Tosta de jamón y tomate', price: 4.5 },
-            {
-              name: 'Tostas clásicas',
-              price: 4.0,
-              notes: 'Mermelada, mantequilla, aceite',
-            },
-            { name: 'Tosta de huevos revueltos y pavo', price: 6.0 },
-            { name: 'Sándwich mixto', price: 3.5 },
-          ],
-        },
-        {
-          name: 'Bollería',
-          items: [
-            { name: 'Croissant', price: 3.5 },
-            { name: 'Croissant mixto', price: 4.0 },
-            { name: 'Tortitas', price: 4.5 },
-            { name: 'Crepes', price: 4.0 },
-          ],
-        },
-        {
-          name: 'Healthy',
-          items: [
-            { name: 'Té matcha', price: 4.0 },
-            { name: 'Bowl de frutas de temporada', price: 5.0 },
-            {
-              name: 'Bowl de yogur kéfir con frutos del bosque y miel',
-              price: 6.5,
-            },
-          ],
-        },
-        {
-          name: 'Cafés',
-          items: [
-            { name: 'Café con leche', price: 2.5 },
-            { name: 'Café bombón', price: 3.0 },
-            { name: 'Café cortado', price: 2.5 },
-            { name: 'Café solo', price: 2.5 },
-            { name: 'Café americano', price: 2.5 },
-            { name: 'Capuccino', price: 3.0 },
-            { name: 'Café irlandés', price: 3.5 },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'Meriendas',
-      slug: 'meriendas',
-      subcategories: [
-        {
-          name: 'Dulces',
-          items: [
-            { name: 'Tortitas', price: 4.5 },
-            { name: 'Gofres', price: 4.5 },
-            {
-              name: 'Brownie con helado de vainilla y caramelo salado',
-              price: 5.0,
-            },
-            { name: 'Crepes', price: 4.0 },
-            { name: 'Sándwich mixto', price: 3.5 },
-            { name: 'Croissant', price: 3.5 },
-            { name: 'Croissant mixto', price: 4.0 },
-            { name: 'Tequeños de Nutella', price: 7.0 },
-            { name: 'Tarta de queso', price: 6.0 },
-          ],
-        },
-        {
-          name: 'Healthy',
-          items: [
-            { name: 'Té matcha', price: 4.0 },
-            { name: 'Bowl de frutas de temporada', price: 5.0 },
-            { name: 'Bowl de yogur kéfir con melocotón y fresas', price: 6.5 },
-          ],
-        },
-        {
-          name: 'Batidos',
           subsections: [
             {
-              name: 'Galletas',
+              name: 'Tintos',
               items: [
-                { name: 'Batido de Oreo', price: 7.0 },
-                { name: 'Batido de Happy Hippo', price: 7.0 },
-                { name: 'Batido de Kinder Bueno', price: 7.0 },
-                { name: 'Batido de KitKat', price: 7.0 },
-                { name: 'Batido de Filipinos blancos', price: 7.0 },
-                { name: 'Batido de Huesitos', price: 7.0 },
+                { name: 'Rioja (Rama Corta Crianza)', price: 4 },
+                { name: 'Ribera del Duero (La planta)', price: 4 },
               ],
             },
             {
-              name: 'Bollería',
+              name: 'Blancos',
               items: [
-                { name: 'Batido de Donut', price: 7.0 },
-                { name: 'Batido de Fosquito', price: 7.0 },
-                { name: 'Batido de Pantera Rosa', price: 7.0 },
+                { name: 'Semidulce (Alma)', price: 4 },
+                { name: 'Albariño (Márquez de Vizhoja)', price: 4 },
               ],
             },
             {
-              name: 'Smoothies',
+              name: 'Botellas',
               items: [
-                { name: 'Smoothie Tropical', price: 7.0 },
-                { name: 'Smoothie de kiwi, pepino y melón', price: 7.0 },
-                {
-                  name: 'Smoothie de naranja, pomelo rosa y mandarina',
-                  price: 7.0,
-                },
-                {
-                  name: 'Smoothie de frutas',
-                  price: 7.0,
-                  notes: 'A consultar',
-                },
+                { name: 'Rama Corta Crianza', price: 20 },
+                { name: 'La planta', price: 20 },
+                { name: 'Alma', price: 18 },
+                { name: 'Márquez de Vizhoja', price: 20 },
               ],
             },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Batidos',
+      slug: 'batidos',
+      subcategories: [
+        {
+          name: 'Batidos',
+          items: [
+            { name: 'Batido de Oreo', price: 7.0 },
+            { name: 'Batido de Kinder Bueno', price: 7.0 },
+            { name: 'Batido de KitKat', price: 7.0 },
+            { name: 'Batido de Filipinos blancos', price: 7.0 },
+            { name: 'Batido de Huesitos', price: 7.0 },
+            { name: 'Batido de Donut', price: 7.0 },
+            { name: 'Batido de Pantera Rosa', price: 7.0 },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Entrantes',
+      slug: 'entrantes',
+      subcategories: [
+        {
+          name: 'Entrantes',
+          items: [
+            { name: 'Bacon cheese fries', price: 10 },
+            { name: 'Fingers', price: 8.5 },
+            { name: 'Tequeños', price: 9 },
+            { name: 'Croquetas de jamón', price: 9 },
+            { name: 'Quesadillas', price: 7 },
+            { name: 'Alitas tailandesas', price: 8 },
+            { name: 'Ensalada de burrata con tomate', price: 9 },
+            { name: 'Ensalada Cesar', price: 12 },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Comidas',
+      slug: 'comidas',
+      subcategories: [
+        {
+          name: 'Comidas principales',
+          items: [
+            { name: 'Cheese burger', price: 13.5 },
+            { name: 'Lady BBQ', price: 13.5 },
+            { name: 'Egocentrica', price: 14.5 },
+            { name: 'Club sandwich', price: 13 },
+            { name: 'Entrecot', price: 21 },
+            { name: 'Poke de pollo', price: 12 },
+            { name: 'Poke de salmon', price: 12 },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Postres',
+      slug: 'postres',
+      subcategories: [
+        {
+          name: 'Postres',
+          items: [
+            { name: 'Tarta de queso', price: 5.5 },
+            { name: 'Plato de fruta', price: 6 },
+            { name: 'Fondee de chocolate', price: 15 },
+            { name: 'Brownie', price: 5.5 },
+            { name: 'Culan', price: 5.5 },
           ],
         },
       ],

@@ -153,29 +153,13 @@ const ShishaPage: React.FC = () => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm border border-white/20"
-              >
-                <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400 font-['Poppins']">
-                  ALTA INTENSIDAD - 26€
-                </h2>
-                <p className="text-white/90 text-lg leading-relaxed">
-                  Vive la experiencia más fuerte con nuestra alta intensidad.
-                  Preparación con cámara de aire, contacto o técnica "Kazan"
-                  para obtener intensidades a partir de 9.
-                </p>
-              </motion.div>
-
-              <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
                 className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm border border-white/20"
               >
                 <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-yellow-400 font-['Poppins']">
-                  WTO EXPERIENCE - 5€ Suplemento
+                  WTO EXPERIENCE - Sujeto a condiciones
                 </h2>
                 <p className="text-white/90 text-lg leading-relaxed">
                   WTO extract está considerado el producto más premium, gourmet

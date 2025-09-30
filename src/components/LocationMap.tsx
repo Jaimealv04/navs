@@ -24,10 +24,10 @@ const LocationMap: React.FC<LocationMapProps> = ({
   locationInfo = {
     address: 'Calle de Manuel Pombo Angulo 10',
     city: 'Madrid, España',
-    phone: '+34 123 456 789',
+    phone: '+34 646 149 112',
     hours: {
-      weekdays: '18:00 - 02:00',
-      weekends: '16:00 - 03:00',
+      weekdays: '10:00am  - 01:00am',
+      weekends: '12:00am - 02:00am',
     },
     coordinates: {
       lat: 40.506095,
@@ -177,13 +177,13 @@ const LocationMap: React.FC<LocationMapProps> = ({
               </div>
               <div className="ml-8 space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-white/70">Lunes - Viernes</span>
+                  <span className="text-white/70">Lunes - Jueves</span>
                   <span className="text-white">
                     {locationInfo.hours.weekdays}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/70">Sábados - Domingos</span>
+                  <span className="text-white/70">Viernes - Sábados - Domingos</span>
                   <span className="text-white">
                     {locationInfo.hours.weekends}
                   </span>
@@ -203,7 +203,6 @@ const LocationMap: React.FC<LocationMapProps> = ({
               </div>
               <div className="ml-8">
                 <button
-                  onClick={handleCall}
                   className="text-white hover:text-white/80 transition-colors"
                 >
                   {locationInfo.phone}
