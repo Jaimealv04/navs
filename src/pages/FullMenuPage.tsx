@@ -6,6 +6,7 @@ import {
   Wine,
   UtensilsCrossed,
   ImageIcon,
+  X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -34,18 +35,115 @@ const ProductImagePlaceholder: React.FC = () => (
   </div>
 );
 
-const MenuItemComponent: React.FC<{ item: NewMenuItem; currency: string }> = ({
-  item,
-  currency,
-}) => (
+// Componente para imagen del producto
+const ProductImage: React.FC<{
+  imageUrl: string;
+  name: string;
+  onImageClick: () => void;
+}> = ({ imageUrl, name, onImageClick }) => (
+  <div
+    className="w-16 h-16 rounded-lg overflow-hidden border border-gray-600 cursor-pointer hover:border-yellow-400/50 transition-all duration-300 group"
+    onClick={onImageClick}
+  >
+    <img
+      src={imageUrl}
+      alt={name}
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+    />
+  </div>
+);
+
+// Modal de imagen
+const ImageModal: React.FC<{
+  isOpen: boolean;
+  imageUrl: string;
+  itemName: string;
+  onClose: () => void;
+}> = ({ isOpen, imageUrl, itemName, onClose }) => {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        onClick={onClose}
+      >
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+
+        {/* Modal Content */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.8, opacity: 0 }}
+          className="relative max-w-4xl max-h-[90vh] w-full"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute -top-4 -right-4 z-10 w-10 h-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300"
+          >
+            <X size={20} />
+          </button>
+
+          {/* Image */}
+          <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden">
+            <img
+              src={imageUrl}
+              alt={itemName}
+              className="w-full h-auto max-h-[80vh] object-contain"
+            />
+            <div className="p-4 text-center">
+              <h3 className="text-white font-medium text-lg">{itemName}</h3>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+const MenuItemComponent: React.FC<{
+  item: NewMenuItem;
+  currency: string;
+  onImageClick: (imageUrl: string, itemName: string) => void;
+}> = ({ item, currency, onImageClick }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 hover:border-yellow-400/30 transition-all duration-300"
   >
     <div className="flex items-start space-x-4">
-      {/* Imagen placeholder */}
-      <ProductImagePlaceholder />
+      {/* Imagen del producto o placeholder */}
+      {item.imageUrl ? (
+        <ProductImage
+          imageUrl={item.imageUrl}
+          name={item.name}
+          onImageClick={() => onImageClick(item.imageUrl!, item.name)}
+        />
+      ) : (
+        <ProductImagePlaceholder />
+      )}
 
       {/* Contenido */}
       <div className="flex-1">
@@ -91,7 +189,8 @@ const SubcategorySection: React.FC<{
   subcategory: MenuSubcategory;
   currency: string;
   isSignature?: boolean;
-}> = ({ subcategory, currency, isSignature = false }) => (
+  onImageClick: (imageUrl: string, itemName: string) => void;
+}> = ({ subcategory, currency, isSignature = false, onImageClick }) => (
   <div className="mb-8">
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -117,7 +216,12 @@ const SubcategorySection: React.FC<{
     {subcategory.items && (
       <div className="grid gap-4">
         {subcategory.items.map((item, idx) => (
-          <MenuItemComponent key={idx} item={item} currency={currency} />
+          <MenuItemComponent
+            key={idx}
+            item={item}
+            currency={currency}
+            onImageClick={onImageClick}
+          />
         ))}
       </div>
     )}
@@ -135,6 +239,7 @@ const SubcategorySection: React.FC<{
                   key={itemIdx}
                   item={item}
                   currency={currency}
+                  onImageClick={onImageClick}
                 />
               ))}
             </div>
@@ -148,11 +253,26 @@ const SubcategorySection: React.FC<{
 const FullMenuPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<{
+    url: string;
+    name: string;
+  } | null>(null);
 
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleImageClick = (imageUrl: string, itemName: string) => {
+    setSelectedImage({ url: imageUrl, name: itemName });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
 
   const filteredCategories = selectedCategory
     ? fullMenuData.categories.filter((cat) => cat.slug === selectedCategory)
@@ -193,14 +313,10 @@ const FullMenuPage: React.FC = () => {
 
               <div className="flex items-center space-x-3">
                 <UtensilsCrossed className="text-yellow-400" size={32} />
-                <h1 className="text-3xl font-bold text-white">
-                  Carta Completa
-                </h1>
+                <h1 className="text-3xl font-bold text-white">Carta</h1>
               </div>
 
-              <div className="text-sm text-gray-400">
-                v{fullMenuData.version}
-              </div>
+              <div className="text-sm text-gray-400"></div>
             </div>
           </div>
 
@@ -284,6 +400,7 @@ const FullMenuPage: React.FC = () => {
                           subcategory={subcategory}
                           currency={fullMenuData.currency}
                           isSignature={subcategory.type === 'signature'}
+                          onImageClick={handleImageClick}
                         />
                       ))}
                     </div>
@@ -303,6 +420,16 @@ const FullMenuPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Image Modal */}
+        {isModalOpen && selectedImage && (
+          <ImageModal
+            isOpen={isModalOpen}
+            imageUrl={selectedImage.url}
+            itemName={selectedImage.name}
+            onClose={closeModal}
+          />
+        )}
       </div>
     </>
   );
