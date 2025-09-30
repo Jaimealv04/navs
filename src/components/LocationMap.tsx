@@ -43,10 +43,6 @@ const LocationMap: React.FC<LocationMapProps> = ({
     window.open(directionsUrl, '_blank');
   };
 
-  const handleCall = () => {
-    window.location.href = `tel:${locationInfo.phone}`;
-  };
-
   return (
     <section
       id="location"
@@ -183,7 +179,9 @@ const LocationMap: React.FC<LocationMapProps> = ({
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/70">Viernes - Sábados - Domingos</span>
+                  <span className="text-white/70">
+                    Viernes - Sábados - Domingos
+                  </span>
                   <span className="text-white">
                     {locationInfo.hours.weekends}
                   </span>
@@ -202,11 +200,7 @@ const LocationMap: React.FC<LocationMapProps> = ({
                 <h3 className="text-lg font-light">Contacto</h3>
               </div>
               <div className="ml-8">
-                <button
-                  className="text-white hover:text-white/80 transition-colors"
-                >
-                  {locationInfo.phone}
-                </button>
+                <p className="text-white">{locationInfo.phone}</p>
               </div>
             </motion.div>
 
