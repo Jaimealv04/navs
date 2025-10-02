@@ -675,7 +675,7 @@ export const fullMenuData: MenuData = {
               name: 'Caipirinha',
               price: 9.0,
               imageUrl:
-                'https://res-console.cloudinary.com/dm70hhhnm/thumbnails/v1/image/upload/v1759172217/Q0FJUElSScORQV9sb3p6NDk=/drilldown',
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759172217/CAIPIRIÑA_lozz49.jpg',
             },
           ],
         },

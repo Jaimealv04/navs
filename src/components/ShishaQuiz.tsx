@@ -78,19 +78,19 @@ const ShishaQuiz: React.FC<ShishaQuizProps> = ({ onComplete, onBack }) => {
       id: 'blond',
       name: 'Blond Blend',
       icon: Coffee,
-      info: 'Tabaco rubio suave y ligero, ideal para principiantes. Ofrece sabores más delicados y menos nicotina.',
+      info: 'Tabaco rubio suave y ligero, ideal para principiantes.',
     },
     {
       id: 'fusion',
       name: 'Fusion Blend',
       icon: Sparkles,
-      info: 'Mezcla equilibrada que combina lo mejor de diferentes tipos. Sabor intermedio y versatilidad única.',
+      info: 'Mezcla equilibrada que combina lo mejor de diferentes tipos. Hoja rubia y hoja negra.',
     },
     {
       id: 'dark',
       name: 'Dark Blend',
       icon: Leaf,
-      info: 'Tabaco oscuro con mayor intensidad y nicotina. Para usuarios experimentados que buscan sabores profundos.',
+      info: 'Tabaco oscuro con mayor intensidad para usuarios experimentados.',
     },
   ];
 
@@ -111,19 +111,19 @@ const ShishaQuiz: React.FC<ShishaQuizProps> = ({ onComplete, onBack }) => {
       id: 'citrico',
       name: 'Cítrico',
       subs: ['ácido', 'amargo'],
-      info: 'Toques de limón, naranja o lima. Refrescante y vibrante, perfecto para limpiar el paladar.',
+      info: 'Toques de limón, naranja y derivados. Refrescante y vibrante, perfecto para limpiar el paladar.',
     },
     {
       id: 'salado',
       name: 'Salado',
       subs: [],
-      info: 'Notas salinas que realzan otros sabores. Aporta complejidad y profundidad a la mezcla.',
+      info: 'Descubre la evolución de la cachimba con sabores como queso, tomate y derivados.',
     },
     {
       id: 'especiado',
       name: 'Especiado',
       subs: [],
-      info: 'Especias como canela, clavo o cardamomo. Calidez y aroma intenso.',
+      info: 'Especias como masala, clavo o cardamomo. Calidez y aroma intenso.',
     },
     {
       id: 'herbal',
@@ -152,7 +152,11 @@ const ShishaQuiz: React.FC<ShishaQuizProps> = ({ onComplete, onBack }) => {
   ];
 
   const getFlavorDisplayName = (flavorId: string) => {
-    return flavorId.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+    return flavorId
+      .replace('-', ' ')
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   };
 
   const handleTobaccoSelect = (tobacco: string) => {
@@ -254,6 +258,14 @@ const ShishaQuiz: React.FC<ShishaQuizProps> = ({ onComplete, onBack }) => {
     </motion.div>
   );
 
+  const getSelectedMainFlavors = () => {
+    return quizState.flavors.map((flavor) => flavor.main);
+  };
+
+  const isFlavorSelected = (flavorId: string) => {
+    return getSelectedMainFlavors().includes(flavorId);
+  };
+
   const renderFlavorStep = () => {
     const currentFlavorIndex = getCurrentFlavorStep();
     const isMain = isMainFlavorStep();
@@ -277,40 +289,87 @@ const ShishaQuiz: React.FC<ShishaQuizProps> = ({ onComplete, onBack }) => {
               ? 'Este será el sabor predominante de tu cachimba'
               : `Añade otro matiz para enriquecer la experiencia (${currentFlavorIndex}/5)`}
           </p>
+
+          {/* Mostrar sabores seleccionados */}
+          {quizState.flavors.length > 0 && (
+            <div className="mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
+              <h3 className="text-lg font-medium text-yellow-400 mb-3">
+                Sabores seleccionados:
+              </h3>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {quizState.flavors.map((flavor, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm border border-green-500/30"
+                  >
+                    {index === 0 && '★ '}
+                    {getFlavorDisplayName(flavor.main)}
+                    {flavor.sub && ` (${getFlavorDisplayName(flavor.sub)})`}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {mainFlavors.map((flavor) => (
-            <motion.button
-              key={flavor.id}
-              onClick={() => {
-                if (flavor.subs.length > 0) {
-                  // Show sub-options
-                  setActiveInfo(`sub-${flavor.id}`);
-                } else {
-                  handleFlavorSelect(flavor.id);
-                }
-              }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:border-yellow-400/50 transition-all duration-300 group"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-medium text-white group-hover:text-yellow-400 transition-colors duration-300">
-                  {flavor.name}
-                </span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveInfo(`flavor-${flavor.id}`);
-                  }}
-                  className="p-1 hover:bg-white/10 rounded-lg transition-colors duration-300"
-                >
-                  <Info className="w-4 h-4 text-white/60 hover:text-yellow-400" />
-                </button>
-              </div>
-            </motion.button>
-          ))}
+          {mainFlavors.map((flavor) => {
+            const isSelected = isFlavorSelected(flavor.id);
+
+            return (
+              <motion.button
+                key={flavor.id}
+                onClick={() => {
+                  if (isSelected) return; // No hacer nada si ya está seleccionado
+
+                  // Solo mostrar subcategorías en el primer sabor
+                  if (flavor.subs.length > 0 && isMain) {
+                    // Show sub-options only for first flavor
+                    setActiveInfo(`sub-${flavor.id}`);
+                  } else {
+                    // Para sabores adicionales, solo seleccionar la categoría principal
+                    handleFlavorSelect(flavor.id);
+                  }
+                }}
+                whileHover={!isSelected ? { scale: 1.02 } : {}}
+                whileTap={!isSelected ? { scale: 0.98 } : {}}
+                disabled={isSelected}
+                className={`relative p-4 backdrop-blur-sm rounded-xl border transition-all duration-300 ${
+                  isSelected
+                    ? 'bg-gray-500/20 border-gray-500/50 opacity-50 cursor-not-allowed'
+                    : 'bg-white/10 border-white/20 hover:border-yellow-400/50 group cursor-pointer'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <span
+                      className={`text-lg font-medium transition-colors duration-300 ${
+                        isSelected
+                          ? 'text-gray-400'
+                          : 'text-white group-hover:text-yellow-400'
+                      }`}
+                    >
+                      {flavor.name}
+                    </span>
+                    {isSelected && (
+                      <span className="text-green-400 text-sm">
+                        ✓ Seleccionado
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveInfo(`flavor-${flavor.id}`);
+                    }}
+                    className="p-1 hover:bg-white/10 rounded-lg transition-colors duration-300"
+                  >
+                    <Info className="w-4 h-4 text-white/60 hover:text-yellow-400" />
+                  </button>
+                </div>
+              </motion.button>
+            );
+          })}
         </div>
 
         {/* Finish Button */}
@@ -327,56 +386,58 @@ const ShishaQuiz: React.FC<ShishaQuizProps> = ({ onComplete, onBack }) => {
           </div>
         )}
 
-        {/* Sub-flavor Popups */}
-        {mainFlavors.map(
-          (flavor) =>
-            flavor.subs.length > 0 && (
-              <AnimatePresence key={`sub-popup-${flavor.id}`}>
-                {activeInfo === `sub-${flavor.id}` && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                    onClick={() => setActiveInfo(null)}
-                  >
-                    <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+        {/* Sub-flavor Popups - Solo para el primer sabor */}
+        {isMain &&
+          mainFlavors.map(
+            (flavor) =>
+              flavor.subs.length > 0 &&
+              !isFlavorSelected(flavor.id) && (
+                <AnimatePresence key={`sub-popup-${flavor.id}`}>
+                  {activeInfo === `sub-${flavor.id}` && (
                     <motion.div
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0.9, opacity: 0 }}
-                      className="relative bg-white/10 backdrop-blur-md rounded-2xl p-6 max-w-md w-full border border-white/20"
-                      onClick={(e) => e.stopPropagation()}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                      onClick={() => setActiveInfo(null)}
                     >
-                      <h3 className="text-xl font-semibold text-yellow-400 mb-4 font-['Poppins']">
-                        Tipo de {flavor.name}
-                      </h3>
-                      <div className="space-y-3">
-                        {flavor.subs.map((sub) => (
-                          <button
-                            key={sub}
-                            onClick={() => {
-                              handleFlavorSelect(flavor.id, sub);
-                              setActiveInfo(null);
-                            }}
-                            className="w-full p-3 bg-white/5 hover:bg-white/10 rounded-lg text-white hover:text-yellow-400 transition-all duration-300 border border-white/10 hover:border-yellow-400/30"
-                          >
-                            {getFlavorDisplayName(sub)}
-                          </button>
-                        ))}
-                      </div>
-                      <button
-                        onClick={() => setActiveInfo(null)}
-                        className="w-full mt-4 bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-300"
+                      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+                      <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.9, opacity: 0 }}
+                        className="relative bg-white/10 backdrop-blur-md rounded-2xl p-6 max-w-md w-full border border-white/20"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        Cancelar
-                      </button>
+                        <h3 className="text-xl font-semibold text-yellow-400 mb-4 font-['Poppins']">
+                          Tipo de {flavor.name}
+                        </h3>
+                        <div className="space-y-3">
+                          {flavor.subs.map((sub) => (
+                            <button
+                              key={sub}
+                              onClick={() => {
+                                handleFlavorSelect(flavor.id, sub);
+                                setActiveInfo(null);
+                              }}
+                              className="w-full p-3 bg-white/5 hover:bg-white/10 rounded-lg text-white hover:text-yellow-400 transition-all duration-300 border border-white/10 hover:border-yellow-400/30"
+                            >
+                              {getFlavorDisplayName(sub)}
+                            </button>
+                          ))}
+                        </div>
+                        <button
+                          onClick={() => setActiveInfo(null)}
+                          className="w-full mt-4 bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-300"
+                        >
+                          Cancelar
+                        </button>
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            )
-        )}
+                  )}
+                </AnimatePresence>
+              )
+          )}
       </motion.div>
     );
   };
