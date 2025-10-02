@@ -105,7 +105,7 @@ const MenuCategories: React.FC = () => {
           {/* Background Image */}
           <div className="absolute inset-0 rounded-2xl overflow-hidden">
             <img
-              src="/comida.jpg"
+              src="https://res.cloudinary.com/dm70hhhnm/image/upload/v1759172141/HAMBURGUESA_3_nixycj.jpg"
               alt="Carta Completa"
               className="w-full h-full object-cover"
             />

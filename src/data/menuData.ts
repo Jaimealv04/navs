@@ -50,42 +50,172 @@ export const fullMenuData: MenuData = {
         {
           name: 'Refrescos',
           items: [
-            { name: 'Agua', price: 3.0 },
-            { name: 'Agua con gas', price: 3.5 },
-            { name: 'Refresco pequeño', price: 3.0 },
-            { name: 'CocaCola', price: 3.5 },
-            { name: 'CocaCola Zero', price: 3.5 },
-            { name: 'Sprite', price: 3.5 },
-            { name: 'Fanta de naranja', price: 3.5 },
-            { name: 'Fanta de limón', price: 3.5 },
-            { name: 'Nestea sin azúcar', price: 3.5 },
-            { name: 'Nestea de maracuyá', price: 3.5 },
-            { name: 'Aquarius de limón', price: 3.5 },
-            { name: 'Aquarius de naranja', price: 3.5 },
-            { name: 'Monsters', price: 4.0 },
-            { name: 'Red Bulls', price: 3.5 },
+            {
+              name: 'Agua',
+              price: 3.0,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413205/Agua_demd03.png',
+            },
+            {
+              name: 'Agua con gas',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413205/Agua_demd03.png',
+            },
+            {
+              name: 'Refresco pequeño',
+              price: 3.0,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759420149/Refresco_peque%C3%B1o_fyulcy.png',
+            },
+            {
+              name: 'CocaCola',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Coca_cola_neoe67.png',
+            },
+            {
+              name: 'CocaCola Zero',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Coca_cola_zero_ayzngu.png',
+            },
+            {
+              name: 'Sprite',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413212/Sprite_aburvy.png',
+            },
+            {
+              name: 'Fanta de naranja',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Fanta_naranja_bf6n6a.png',
+            },
+            {
+              name: 'Fanta de limón',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Fanta_limon_ibrrte.png',
+            },
+            {
+              name: 'Nestea sin azúcar',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413211/Nestea_sin_azucar_sq1ttg.png',
+            },
+            {
+              name: 'Nestea de maracuyá',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413211/Nestea_de_maracuyá_qfdwdy.png',
+            },
+            {
+              name: 'Aquarius de limón',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413205/Aquarius_limon_wzhz8a.png',
+            },
+            {
+              name: 'Aquarius de naranja',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413205/Aquarius_naranja_hykvig.png',
+            },
+            {
+              name: 'Monsters',
+              price: 4.0,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Monsters_npjrwc.png',
+            },
+            {
+              name: 'Red Bulls',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413211/Redbull_pvnclm.png',
+            },
           ],
         },
         {
           name: 'Cervezas',
           items: [
-            { name: 'Doble', price: 3.0 },
-            { name: 'Tercio de Mahou', price: 3.5 },
-            { name: 'Alhambra', price: 3.5 },
-            { name: 'Radler', price: 3.5 },
-            { name: 'Cerveza 0,0', price: 3.5 },
-            { name: 'Coronita', price: 3.5 },
-            { name: 'Salitos', price: 3.5 },
-            { name: '1906', price: 3.5 },
-            { name: 'Estrella Galicia', price: 3.5 },
+            {
+              name: 'Doble',
+              price: 3.0,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Doble_Cerveza_dsxn3t.png',
+            },
+            {
+              name: 'Tercio de Mahou',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413215/Tercio_Mahou_wmgbmt.png',
+            },
+            {
+              name: 'Alhambra',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413205/Alhambra_owcjdu.png',
+            },
+            {
+              name: 'Radler',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413211/Radler_trkkpz.png',
+            },
+            {
+              name: 'Cerveza 0,0',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413205/Cerveza_0.0_x9xmvb.png',
+            },
+            {
+              name: 'Coronita',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Coronita_wtala8.png',
+            },
+            {
+              name: 'Salitos',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759416343/Salitos_dcwq5w.png',
+            },
+            {
+              name: '1906',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759416343/1906_ounkv6.png',
+            },
+            {
+              name: 'Estrella Galicia',
+              price: 3.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759417271/Estrella_Galicia_cxqfgc.png',
+            },
           ],
         },
         {
           name: 'Zumos',
           items: [
-            { name: 'Zumo de naranja', price: 2.5 },
-            { name: 'Zumo de piña', price: 2.5 },
-            { name: 'Zumo de melocotón', price: 2.5 },
+            {
+              name: 'Zumo de naranja',
+              price: 2.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759416344/Zumo_naranja_byq7cc.png',
+            },
+            {
+              name: 'Zumo de piña',
+              price: 2.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759416343/Zumo_piña_e4edq1.png',
+            },
+            {
+              name: 'Zumo de melocotón',
+              price: 2.5,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759416343/Zumo_melocoton_jtyq1q.png',
+            },
           ],
         },
         {
