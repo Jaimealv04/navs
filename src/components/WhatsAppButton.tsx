@@ -8,8 +8,8 @@ interface WhatsAppButtonProps {
 }
 
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
-  phoneNumber = "34123456789", // Formato internacional sin +
-  defaultMessage = "¡Hola! Me interesa conocer más sobre EGO HOUSE Madrid. ¿Podrían darme información sobre reservas y servicios?"
+  phoneNumber = '34646149112', // Formato internacional sin +
+  defaultMessage = '¡Hola! Me interesa conocer más sobre EGO HOUSE Madrid. ¿Podrían darme información sobre reservas y servicios?',
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [message, setMessage] = useState(defaultMessage);
@@ -55,7 +55,9 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">EGO HOUSE</h3>
-                    <p className="text-sm text-gray-500">Generalmente responde en minutos</p>
+                    <p className="text-sm text-gray-500">
+                      Generalmente responde en minutos
+                    </p>
                   </div>
                 </div>
                 <button
@@ -98,9 +100,9 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
                 <p className="text-xs text-gray-500 mb-2">Mensajes rápidos:</p>
                 <div className="space-y-1">
                   {[
-                    "¿Cuál es el horario?",
-                    "Quiero hacer una reserva",
-                    "¿Qué servicios ofrecen?"
+                    '¿Cuál es el horario?',
+                    'Quiero hacer una reserva',
+                    '¿Qué servicios ofrecen?',
                   ].map((quickMessage, index) => (
                     <button
                       key={index}

@@ -161,7 +161,7 @@ const LandingPage: React.FC = () => {
 
       {/* WhatsApp Floating Button */}
       <WhatsAppButton
-        phoneNumber="34123456789"
+        phoneNumber="34646149112"
         defaultMessage="¡Hola! Me interesa conocer más sobre EGO HOUSE Madrid. ¿Podrían darme información sobre reservas y experiencias disponibles?"
       />
     </>
