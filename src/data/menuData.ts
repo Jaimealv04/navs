@@ -140,12 +140,6 @@ export const fullMenuData: MenuData = {
           name: 'Cervezas',
           items: [
             {
-              name: 'Doble',
-              price: 3.0,
-              imageUrl:
-                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Doble_Cerveza_dsxn3t.png',
-            },
-            {
               name: 'Tercio de Mahou',
               price: 3.5,
               imageUrl:
@@ -174,24 +168,6 @@ export const fullMenuData: MenuData = {
               price: 3.5,
               imageUrl:
                 'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759413206/Coronita_wtala8.png',
-            },
-            {
-              name: 'Salitos',
-              price: 3.5,
-              imageUrl:
-                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759416343/Salitos_dcwq5w.png',
-            },
-            {
-              name: '1906',
-              price: 3.5,
-              imageUrl:
-                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759416343/1906_ounkv6.png',
-            },
-            {
-              name: 'Estrella Galicia',
-              price: 3.5,
-              imageUrl:
-                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759417271/Estrella_Galicia_cxqfgc.png',
             },
           ],
         },
@@ -245,7 +221,12 @@ export const fullMenuData: MenuData = {
               imageUrl:
                 'https://res.cloudinary.com/dm70hhhnm/image/upload/HAVANA_ielo5y',
             },
-            { name: 'Zacapa', price: 13 },
+            {
+              name: 'Zacapa',
+              price: 13,
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759521333/Zacapa_wjavgd.png',
+            },
             {
               name: 'Ron Santa Teresa 1796',
               price: 13,
@@ -751,7 +732,7 @@ export const fullMenuData: MenuData = {
                 'https://res.cloudinary.com/dm70hhhnm/image/upload/POSTRE_2_l0zycj',
             },
             {
-              name: 'Culan',
+              name: 'Coulant',
               price: 5.5,
               imageUrl:
                 'https://res.cloudinary.com/dm70hhhnm/image/upload/POSTRE_1_l4plzo',
@@ -819,28 +800,32 @@ export const fullMenuData: MenuData = {
               description:
                 'yuzu, melón, albahaca, blue curaçao, lima y ginebra',
               tagline: 'minimalista y delicado',
-              imageUrl: '',
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759521341/7_ux3ynh.jpg',
             },
             {
               name: 'Rosé de minuit',
               price: 11.0,
               description: 'naranja, fresa y cava',
               tagline: 'sofisticado y misterioso',
-              imageUrl: '',
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759521341/3_gwof66.jpg',
             },
             {
               name: 'Baobab Dreams',
               price: 11.0,
               description: 'piña, plátano, coco y ron',
               tagline: 'exótico y evocador',
-              imageUrl: '',
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759521340/1_dgrzey.jpg',
             },
             {
               name: 'Smoky Tennessee',
               price: 11.0,
               description: "naranja, limón, granadina y Jack Daniel's",
               tagline: 'dulzura ahumada',
-              imageUrl: '',
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759521342/10_iwabkx.jpg',
             },
             {
               name: 'Rojo Zar',
@@ -848,7 +833,8 @@ export const fullMenuData: MenuData = {
               description:
                 'zumo de granada, limón, azúcar, agua con gas y vodka',
               tagline: 'Desde Rusia con amor',
-              imageUrl: '',
+              imageUrl:
+                'https://res.cloudinary.com/dm70hhhnm/image/upload/v1759521341/5_dcvebf.jpg',
             },
           ],
         },
