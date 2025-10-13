@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { UtensilsCrossed, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../data/menuData';
 
@@ -33,10 +33,6 @@ const MenuCategories: React.FC = () => {
 
   const handleMenuClick = () => {
     navigate('/menu/general');
-  };
-
-  const handleShishaClick = () => {
-    navigate('/shisha');
   };
 
   const containerVariants = {
@@ -117,9 +113,6 @@ const MenuCategories: React.FC = () => {
           <div className="relative h-96 flex flex-col justify-between p-8 text-white">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors duration-300 backdrop-blur-sm">
-                <UtensilsCrossed className="w-6 h-6" />
-              </div>
               <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
                 {totalItems} productos
               </span>
@@ -143,23 +136,24 @@ const MenuCategories: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Card Cachimbas */}
+        {/* Cachimba Card */}
         <motion.div
           variants={itemVariants}
           whileHover={{
             y: -8,
             transition: { type: 'spring', stiffness: 400, damping: 25 },
           }}
-          onClick={handleShishaClick}
+          onClick={() => navigate('/shisha')}
           className="group relative cursor-pointer overflow-hidden"
         >
           {/* Background Image */}
           <div className="absolute inset-0 rounded-2xl overflow-hidden">
             <img
               src="/hookas.jpg"
-              alt="Algo para fumar"
+              alt="Cachimbas"
               className="w-full h-full object-cover"
             />
+            {/* Overlay */}
             <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300" />
           </div>
 
@@ -167,9 +161,7 @@ const MenuCategories: React.FC = () => {
           <div className="relative h-96 flex flex-col justify-between p-8 text-white">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                Experiencia única
-              </span>
+
             </div>
 
             {/* Content */}
@@ -189,6 +181,30 @@ const MenuCategories: React.FC = () => {
             </div>
           </div>
         </motion.div>
+      </motion.div>
+
+      {/* Gallery Button - Fuera del grid pero alineado con la card de cachimbas */}
+      <motion.div
+        variants={itemVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="max-w-6xl mx-auto mt-6"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Espacio vacío para alinear con la primera card */}
+          <div className="hidden lg:block"></div>
+          
+          {/* Botón alineado con la segunda card */}
+          <div className="flex justify-center">
+            <button
+              onClick={() => navigate('/galeria-cachimbas')}
+              className="bg-transparent border border-white text-white px-8 py-3 font-light hover:bg-white hover:text-black transition-all duration-300 text-sm backdrop-blur-sm rounded-lg"
+            >
+              Ver galería
+            </button>
+          </div>
+        </div>
       </motion.div>
     </div>
   );
