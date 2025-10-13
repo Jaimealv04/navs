@@ -160,9 +160,7 @@ const MenuCategories: React.FC = () => {
           {/* Card Content */}
           <div className="relative h-96 flex flex-col justify-between p-8 text-white">
             {/* Header */}
-            <div className="flex items-center justify-between">
-
-            </div>
+            <div className="flex items-center justify-between"></div>
 
             {/* Content */}
             <div className="text-center">
@@ -194,7 +192,7 @@ const MenuCategories: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Espacio vacío para alinear con la primera card */}
           <div className="hidden lg:block"></div>
-          
+
           {/* Botón alineado con la segunda card */}
           <div className="flex justify-center">
             <button
