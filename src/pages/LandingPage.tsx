@@ -123,17 +123,38 @@ const LandingPage: React.FC = () => {
                 Experiencia sensorial única
               </motion.p>
 
-              {/* CTA Button */}
-              <motion.button
-                variants={itemVariants}
-                onClick={() => navigate('/shisha')}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-none border-1 border-white text-white px-8 py-3 font-light hover:transition-all duration-300"
-                aria-label="Crear experiencia personalizada de cachimba en EGO HOUSE"
-              >
-                Crear experiencia
-              </motion.button>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <motion.button
+                  variants={itemVariants}
+                  onClick={() => navigate('/shisha')}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-none border-1 border-white text-white px-8 py-3 font-light hover:transition-all duration-300"
+                  aria-label="Crear experiencia personalizada de cachimba en EGO HOUSE"
+                >
+                  Crear experiencia
+                </motion.button>
+
+                <motion.button
+                  variants={itemVariants}
+                  onClick={() => {
+                    const message = encodeURIComponent(
+                      '¡Hola! Me gustaría reservar una mesa en EGO HOUSE Madrid. ¿Podrían ayudarme con la disponibilidad y horarios?'
+                    );
+                    window.open(
+                      `https://wa.me/34646149112?text=${message}`,
+                      '_blank'
+                    );
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-white border-1 border-white text-black px-8 py-3 font-light hover:bg-white/90 transition-all duration-300"
+                  aria-label="Reservar mesa en EGO HOUSE Madrid por WhatsApp"
+                >
+                  Reservar mesa
+                </motion.button>
+              </div>
             </motion.div>
           </div>
         </section>
