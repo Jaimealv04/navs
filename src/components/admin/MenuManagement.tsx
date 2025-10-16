@@ -3,9 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
-  Edit,
   Trash2,
-  Save,
   X,
   Loader2,
   AlertTriangle,
@@ -13,9 +11,9 @@ import {
   UtensilsCrossed
 } from 'lucide-react';
 import { CatalogService } from '../../services';
-import type { Category, CreateCategoryRequest, UpdateCategoryRequest, AddItemRequest } from '../../types';
+import type { Category, AddItemRequest } from '../../types';
 
-type ModalType = 'category' | 'item' | null;
+type ModalType = 'item' | null;
 
 interface MenuManagementProps {
   onBack: () => void;
@@ -29,20 +27,15 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
   
   // Modal states
   const [modalType, setModalType] = useState<ModalType>(null);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
   
   // Form states
-  const [categoryForm, setCategoryForm] = useState({
-    name: '',
-    slug: ''
-  });
-  
   const [itemForm, setItemForm] = useState({
     name: '',
     description: '',
     price: '',
-    subcategoryName: ''
+    subcategoryName: '',
+    subsectionName: ''
   });
 
   // Load categories on mount
@@ -135,73 +128,12 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
     }
   };
 
-  // Category operations
-  const openCategoryModal = (category?: Category) => {
-    if (category) {
-      setEditingCategory(category);
-      setCategoryForm({
-        name: category.name,
-        slug: category.slug
-      });
-    } else {
-      setEditingCategory(null);
-      setCategoryForm({ name: '', slug: '' });
-    }
-    setModalType('category');
-  };
 
-  const saveCategoryHandler = async () => {
-    try {
-      setLoading(true);
-      
-      if (editingCategory) {
-        // Update existing category
-        const updateData: UpdateCategoryRequest = {
-          name: categoryForm.name,
-          slug: categoryForm.slug
-        };
-        await CatalogService.updateCategory(editingCategory.id, updateData);
-        showMessage('Categoría actualizada exitosamente');
-      } else {
-        // Create new category
-        const createData: CreateCategoryRequest = {
-          name: categoryForm.name,
-          slug: categoryForm.slug
-        };
-        await CatalogService.createCategory(createData);
-        showMessage('Categoría creada exitosamente');
-      }
-      
-      closeModal();
-      await loadCategories();
-    } catch (err: any) {
-      showMessage(err.message || 'Error al guardar categoría', true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const deleteCategoryHandler = async (categoryId: string, categoryName: string) => {
-    if (!confirm(`¿Estás seguro de eliminar la categoría "${categoryName}"?`)) {
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await CatalogService.deleteCategory(categoryId);
-      showMessage('Categoría eliminada exitosamente');
-      await loadCategories();
-    } catch (err: any) {
-      showMessage(err.message || 'Error al eliminar categoría', true);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Item operations
   const openItemModal = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
-    setItemForm({ name: '', description: '', price: '', subcategoryName: '' });
+    setItemForm({ name: '', description: '', price: '', subcategoryName: '', subsectionName: '' });
     setModalType('item');
   };
 
@@ -212,6 +144,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
       const itemData: AddItemRequest = {
         categoryId: selectedCategoryId,
         subcategoryName: itemForm.subcategoryName || 'General',
+        subsectionName: itemForm.subsectionName || undefined,
         item: {
           name: itemForm.name,
           description: itemForm.description,
@@ -224,7 +157,16 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
       closeModal();
       await loadCategories();
     } catch (err: any) {
-      showMessage(err.message || 'Error al agregar producto', true);
+      // Mostrar mensaje específico si la subcategoría o subsección no existe
+      const errorMessage = err.message || 'Error al agregar producto';
+      if (errorMessage.toLowerCase().includes('subcategor') || errorMessage.toLowerCase().includes('subsec') || errorMessage.toLowerCase().includes('no existe')) {
+        const location = itemForm.subsectionName 
+          ? `subcategoría "${itemForm.subcategoryName || 'General'}" y subsección "${itemForm.subsectionName}"`
+          : `subcategoría "${itemForm.subcategoryName || 'General'}"`;
+        showMessage(`La ${location} no existe. Verifica el nombre o contacta al administrador.`, true);
+      } else {
+        showMessage(errorMessage, true);
+      }
     } finally {
       setLoading(false);
     }
@@ -249,10 +191,8 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
 
   const closeModal = () => {
     setModalType(null);
-    setEditingCategory(null);
     setSelectedCategoryId('');
-    setCategoryForm({ name: '', slug: '' });
-    setItemForm({ name: '', description: '', price: '', subcategoryName: '' });
+    setItemForm({ name: '', description: '', price: '', subcategoryName: '', subsectionName: '' });
   };
 
   const renderMessages = () => (
@@ -287,93 +227,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
     </>
   );
 
-  const renderCategoryModal = () => {
-    const modalContent = (
-      <AnimatePresence>
-        {modalType === 'category' && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-              onClick={closeModal}
-            />
-            
-            {/* Modal */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-gray-900 rounded-xl border border-gray-700 p-6 shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-white">
-                  {editingCategory ? 'Editar Categoría' : 'Nueva Categoría'}
-                </h3>
-                <button 
-                  onClick={closeModal} 
-                  className="text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-gray-800"
-                >
-                  <X size={20} />
-                </button>
-              </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Nombre
-                  </label>
-                  <input
-                    type="text"
-                    value={categoryForm.name}
-                    onChange={(e) => setCategoryForm(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
-                    placeholder="Nombre de la categoría"
-                    autoFocus
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Slug (URL)
-                  </label>
-                  <input
-                    type="text"
-                    value={categoryForm.slug}
-                    onChange={(e) => setCategoryForm(prev => ({ ...prev, slug: e.target.value }))}
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
-                    placeholder="categoria-url"
-                  />
-                </div>
-
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    onClick={closeModal}
-                    className="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={saveCategoryHandler}
-                    disabled={loading || !categoryForm.name || !categoryForm.slug}
-                    className="flex-1 px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                  >
-                    {loading ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
-                    <span className="ml-2">Guardar</span>
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    );
-
-    return createPortal(modalContent, document.body);
-  };
 
   const renderItemModal = () => {
     const modalContent = (
@@ -398,9 +252,12 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-white">
-                  Nuevo Producto
-                </h3>
+                <div>
+                  <h3 className="text-xl font-bold text-white">
+                    Nuevo Producto
+                  </h3>
+                  <p className="text-gray-400 text-sm">Agrega un producto a una subcategoría o subsección</p>
+                </div>
                 <button 
                   onClick={closeModal} 
                   className="text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-gray-800"
@@ -434,6 +291,19 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
                     onChange={(e) => setItemForm(prev => ({ ...prev, subcategoryName: e.target.value }))}
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
                     placeholder="General"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Subsección <span className="text-gray-500 text-xs">(opcional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={itemForm.subsectionName}
+                    onChange={(e) => setItemForm(prev => ({ ...prev, subsectionName: e.target.value }))}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                    placeholder="Deja vacío si no hay subsección"
                   />
                 </div>
 
@@ -508,16 +378,8 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-2xl font-bold text-white">Gestión del Menú</h3>
-          <p className="text-gray-400">Administra categorías y productos</p>
+          <p className="text-gray-400">Administra productos del menú</p>
         </div>
-        
-        <button
-          onClick={() => openCategoryModal()}
-          className="flex items-center space-x-2 px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-300 transition-colors"
-        >
-          <Plus size={16} />
-          <span>Nueva Categoría</span>
-        </button>
       </div>
 
       <div className="grid gap-6">
@@ -545,20 +407,6 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
                 >
                   <Plus size={16} />
                 </button>
-                <button
-                  onClick={() => openCategoryModal(category)}
-                  className="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
-                  title="Editar categoría"
-                >
-                  <Edit size={16} />
-                </button>
-                <button
-                  onClick={() => deleteCategoryHandler(category.id, category.name)}
-                  className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                  title="Eliminar categoría"
-                >
-                  <Trash2 size={16} />
-                </button>
               </div>
             </div>
 
@@ -569,32 +417,76 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
                 <div key={subcategory.name} className="border-l-2 border-yellow-400/30 pl-4">
                   <h5 className="text-lg font-semibold text-white mb-3">{subcategory.name}</h5>
                   
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {subcategory.items?.map((item) => (
-                      <div
-                        key={item.name}
-                        className="bg-gray-900/50 border border-gray-600 rounded-lg p-3 group hover:border-gray-500 transition-colors"
-                      >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1 min-w-0">
-                            <h6 className="font-medium text-white truncate">{item.name}</h6>
-                            {item.description && (
-                              <p className="text-gray-400 text-sm mt-1 line-clamp-2">{item.description}</p>
-                            )}
-                            <p className="text-yellow-400 font-bold mt-2">{item.price}€</p>
+                  {/* Renderizar items directos de la subcategoría */}
+                  {subcategory.items && subcategory.items.length > 0 && (
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+                      {subcategory.items.map((item) => (
+                        <div
+                          key={item.name}
+                          className="bg-gray-900/50 border border-gray-600 rounded-lg p-3 group hover:border-gray-500 transition-colors"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1 min-w-0">
+                              <h6 className="font-medium text-white truncate">{item.name}</h6>
+                              {item.description && (
+                                <p className="text-gray-400 text-sm mt-1 line-clamp-2">{item.description}</p>
+                              )}
+                              <p className="text-yellow-400 font-bold mt-2">{item.price}€</p>
+                            </div>
+                            
+                            <button
+                              onClick={() => deleteItemHandler(category.id, item.name)}
+                              className="ml-2 p-1 text-red-400 hover:bg-red-500/10 rounded opacity-0 group-hover:opacity-100 transition-all"
+                              title="Eliminar producto"
+                            >
+                              <Trash2 size={14} />
+                            </button>
                           </div>
-                          
-                          <button
-                            onClick={() => deleteItemHandler(category.id, item.name)}
-                            className="ml-2 p-1 text-red-400 hover:bg-red-500/10 rounded opacity-0 group-hover:opacity-100 transition-all"
-                            title="Eliminar producto"
-                          >
-                            <Trash2 size={14} />
-                          </button>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Renderizar subsecciones */}
+                  {subcategory.subsections?.map((subsection) => (
+                    <div key={subsection.name} className="border-l-2 border-blue-400/30 pl-4 mb-4">
+                      <h6 className="text-md font-medium text-blue-300 mb-2">{subsection.name}</h6>
+                      
+                      {subsection.items && subsection.items.length > 0 ? (
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                          {subsection.items.map((item) => (
+                            <div
+                              key={item.name}
+                              className="bg-gray-900/50 border border-gray-600 rounded-lg p-3 group hover:border-gray-500 transition-colors"
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1 min-w-0">
+                                  <h6 className="font-medium text-white truncate">{item.name}</h6>
+                                  {item.description && (
+                                    <p className="text-gray-400 text-sm mt-1 line-clamp-2">{item.description}</p>
+                                  )}
+                                  <p className="text-yellow-400 font-bold mt-2">{item.price}€</p>
+                                  <p className="text-blue-300 text-xs mt-1">en {subsection.name}</p>
+                                </div>
+                                
+                                <button
+                                  onClick={() => deleteItemHandler(category.id, item.name)}
+                                  className="ml-2 p-1 text-red-400 hover:bg-red-500/10 rounded opacity-0 group-hover:opacity-100 transition-all"
+                                  title="Eliminar producto"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-4 text-gray-600">
+                          <p className="text-sm">Subsección vacía</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               ))}
 
@@ -602,6 +494,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
                 <div className="text-center py-8 text-gray-500">
                   <UtensilsCrossed size={32} className="mx-auto mb-2 opacity-50" />
                   <p>No hay productos en esta categoría</p>
+                  <p className="text-xs mt-1">Los productos pueden estar en subcategorías o subsecciones</p>
                   <button
                     onClick={() => openItemModal(category.id)}
                     className="mt-2 text-yellow-400 hover:text-yellow-300 text-sm"
@@ -618,20 +511,12 @@ const MenuManagement: React.FC<MenuManagementProps> = ({ }) => {
           <div className="text-center py-20 text-gray-500">
             <UtensilsCrossed size={48} className="mx-auto mb-4 opacity-50" />
             <h3 className="text-xl font-semibold mb-2">No hay categorías</h3>
-            <p className="mb-4">Comienza creando tu primera categoría del menú</p>
-            <button
-              onClick={() => openCategoryModal()}
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-300 transition-colors"
-            >
-              <Plus size={16} />
-              <span>Crear Categoría</span>
-            </button>
+            <p>Las categorías deben ser creadas desde el backend</p>
           </div>
         )}
       </div>
 
       {/* Render modals */}
-      {renderCategoryModal()}
       {renderItemModal()}
     </div>
   );
