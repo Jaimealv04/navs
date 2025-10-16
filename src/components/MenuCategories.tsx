@@ -35,6 +35,10 @@ const MenuCategories: React.FC = () => {
     navigate('/menu/general');
   };
 
+  const handleShishaClick = () => {
+    navigate('/shisha');
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -165,7 +169,7 @@ const MenuCategories: React.FC = () => {
             y: -8,
             transition: { type: 'spring', stiffness: 400, damping: 25 },
           }}
-          onClick={() => navigate('/shisha')}
+          onClick={handleShishaClick}
           className="group relative cursor-pointer overflow-hidden"
         >
           {/* Background Image */}

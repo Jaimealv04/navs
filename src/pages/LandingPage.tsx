@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
+import { useAuthWithServices } from '../hooks/useAuthWithServices';
 import Navbar from '../components/Navbar';
 import LocationMap from '../components/LocationMap';
 import Footer from '../components/Footer';
@@ -12,8 +12,16 @@ import WhatsAppButton from '../components/WhatsAppButton';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [showLogin, setShowLogin] = useState(false);
+  const { user, isAuthenticated } = useAuthWithServices();
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+  // Redirección automática para usuarios admin
+  useEffect(() => {
+    if (isAuthenticated && user && user.role === 'ADMIN') {
+      console.log('Usuario admin detectado en landing page, redirigiendo...');
+      navigate('/admin', { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
 
   // Detectar móvil/tablet para desactivar animaciones
   useEffect(() => {
@@ -68,10 +76,6 @@ const LandingPage: React.FC = () => {
         },
       };
 
-  if (showLogin) {
-    return <LoginForm onBack={() => setShowLogin(false)} />;
-  }
-
   return (
     <>
       {/* SEO Meta Tags */}
@@ -84,7 +88,7 @@ const LandingPage: React.FC = () => {
       />
 
       {/* Navbar Component */}
-      <Navbar onLoginClick={() => setShowLogin(true)} />
+      <Navbar />
 
       {/* Hero Section with Video Background */}
       <main>

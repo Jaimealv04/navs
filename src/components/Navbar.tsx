@@ -1,17 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn } from 'lucide-react';
+import { useAuthWithServices } from '../hooks/useAuthWithServices';
+import UserMenu from './UserMenu';
+import AuthModal from './AuthModal';
 
 interface NavbarProps {
-  onLoginClick: () => void;
+  onLoginClick?: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
+  const { isAuthenticated } = useAuthWithServices();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const handleLoginClick = () => {
+    if (onLoginClick) {
+      onLoginClick();
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
 
   // Hook para detectar el scroll
   useEffect(() => {
+    console.log('Navbar mounted, isAuthenticated:', isAuthenticated);
     const handleScroll = () => {
       const isScrolled = window.scrollY > 100;
       setScrolled(isScrolled);
@@ -20,6 +35,11 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Log cambios en el estado de autenticación
+  useEffect(() => {
+    console.log('Navbar: Auth state changed:', { isAuthenticated });
+  }, [isAuthenticated]);
 
   // Cerrar menú móvil cuando se hace scroll
   useEffect(() => {
@@ -102,15 +122,22 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
               ))}
             </div>
 
-            {/* Desktop Login Button - Más minimalista */}
-            <motion.button
-              onClick={onLoginClick}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="hidden md:block px-6 py-2 text-white  border-white/20 rounded-full hover:bg-white/5 transition-all duration-300 text-sm font-medium"
-            >
-              {/* Login */}
-            </motion.button>
+            {/* Desktop Authentication Area */}
+            <div className="hidden md:block">
+              {isAuthenticated ? (
+                <UserMenu />
+              ) : (
+                <motion.button
+                  onClick={handleLoginClick}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center gap-2 px-6 py-2 text-white border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300 text-sm font-medium"
+                >
+                  <LogIn size={16} />
+                  Acceder
+                </motion.button>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <motion.button
@@ -174,24 +201,39 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
                       {item.name}
                     </motion.button>
                   ))}
+                  
+                  {/* Authentication Area in Mobile Menu */}
+                  <div className="pt-4 border-t border-white/10">
+                    {isAuthenticated ? (
+                      <div className="px-4">
+                        <UserMenu />
+                      </div>
+                    ) : (
+                      <motion.button
+                        onClick={() => {
+                          handleLoginClick();
+                          setMobileMenuOpen(false);
+                        }}
+                        whileHover={{ scale: 1.02 }}
+                        className="w-full border border-white/20 text-white py-3 px-6 rounded-full hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2"
+                      >
+                        <LogIn size={16} />
+                        Acceder
+                      </motion.button>
+                    )}
+                  </div>
                 </div>
-
-                {/* Login Button */}
-                <motion.button
-                  onClick={() => {
-                    onLoginClick();
-                    setMobileMenuOpen(false);
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  className="w-full border border-white/20 text-white py-3 px-6 rounded-full hover:bg-white/5 transition-all duration-300"
-                >
-                  Acceder
-                </motion.button>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+      />
     </>
   );
 };

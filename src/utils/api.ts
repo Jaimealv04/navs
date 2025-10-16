@@ -9,6 +9,14 @@ export const API_CONFIG = {
   TIMEOUT: 10000,
 } as const;
 
+// Variable para acceder al store de Zustand desde fuera de React
+let authStoreApi: any = null;
+
+// Función para configurar el store (se llama desde el store)
+export const setAuthStoreApi = (api: any) => {
+  authStoreApi = api;
+};
+
 // Crear instancia de axios con configuración base
 const createAxiosInstance = (): AxiosInstance => {
   const instance = axios.create({
@@ -22,7 +30,15 @@ const createAxiosInstance = (): AxiosInstance => {
   // Interceptor para requests - agregar token automáticamente
   instance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem(API_CONFIG.JWT_TOKEN_KEY);
+      // Obtener token del store de Zustand si está disponible
+      let token = null;
+      if (authStoreApi) {
+        token = authStoreApi.getState().token;
+      } else {
+        // Fallback al localStorage
+        token = localStorage.getItem(API_CONFIG.JWT_TOKEN_KEY);
+      }
+      
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -39,11 +55,15 @@ const createAxiosInstance = (): AxiosInstance => {
       return response;
     },
     (error) => {
-      // Si el token ha expirado o es inválido (401), limpiar storage
+      // Si el token ha expirado o es inválido (401), limpiar estado
       if (error.response?.status === 401) {
+        // Limpiar localStorage
         localStorage.removeItem(API_CONFIG.JWT_TOKEN_KEY);
-        // Opcional: redirigir a login
-        // window.location.href = '/';
+        
+        // Limpiar store de Zustand si está disponible
+        if (authStoreApi) {
+          authStoreApi.getState().logout();
+        }
       }
 
       // Formatear error según la estructura de la API

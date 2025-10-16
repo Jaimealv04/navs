@@ -1,5 +1,5 @@
 // Re-exportar hooks de autenticación
-export { useAuth, useIsAdmin, useUser } from '../contexts/AuthContext';
+export { useAuthWithServices } from './useAuthWithServices';
 
 // Re-exportar hooks de catálogo
 export {
