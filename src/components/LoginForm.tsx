@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Eye, EyeOff, User, Lock, Mail } from 'lucide-react';
+import { useAuth } from '../hooks';
 
 interface LoginFormProps {
   onBack: () => void;
@@ -12,10 +13,25 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  
+  const { login, register, isLoading, error, clearError } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Auth attempt:', { email, password, isLogin, name });
+    clearError();
+
+    try {
+      if (isLogin) {
+        await login({ email, password });
+      } else {
+        await register({ email, password, name });
+      }
+      // Si llega aquí, la autenticación fue exitosa
+      onBack(); // Volver a la página principal
+    } catch (error) {
+      // El error ya se maneja en el contexto
+      console.error('Auth error:', error);
+    }
   };
 
   return (
@@ -181,18 +197,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </motion.div>
+              
+
+              {/* Error message */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-400 text-sm text-center bg-red-900/20 border border-red-500/30 rounded-lg p-3"
+                >
+                  {error}
+                </motion.div>
+              )}
 
               {/* Submit button */}
               <motion.button
                 type="submit"
-                className="w-full py-4 bg-white text-black rounded-lg font-medium hover:bg-white/90 transition-all duration-300 text-lg"
+                disabled={isLoading}
+                className={`w-full py-4 bg-white text-black rounded-lg font-medium transition-all duration-300 text-lg ${
+                  isLoading 
+                    ? 'opacity-50 cursor-not-allowed' 
+                    : 'hover:bg-white/90 hover:scale-[1.02] hover:-translate-y-0.5'
+                }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: isLogin ? 1.2 : 1.3 }}
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={!isLoading ? { scale: 1.02, y: -2 } : {}}
+                whileTap={!isLoading ? { scale: 0.98 } : {}}
               >
-                {isLogin ? 'Acceder' : 'Crear cuenta'}
+                {isLoading ? 'Cargando...' : (isLogin ? 'Acceder' : 'Crear cuenta')}
               </motion.button>
             </form>
 
@@ -321,17 +354,33 @@ const LoginForm: React.FC<LoginFormProps> = ({ onBack }) => {
                 </button>
               </motion.div>
 
+              {/* Error message - Mobile */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-400 text-sm text-center bg-red-900/20 border border-red-500/30 rounded-lg p-3"
+                >
+                  {error}
+                </motion.div>
+              )}
+
               {/* Submit button */}
               <motion.button
                 type="submit"
-                className="w-full py-3 bg-white text-black rounded-lg font-medium hover:bg-white/90 transition-all duration-300"
+                disabled={isLoading}
+                className={`w-full py-3 bg-white text-black rounded-lg font-medium transition-all duration-300 ${
+                  isLoading 
+                    ? 'opacity-50 cursor-not-allowed' 
+                    : 'hover:bg-white/90'
+                }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: isLogin ? 0.7 : 0.8 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={!isLoading ? { scale: 1.02 } : {}}
+                whileTap={!isLoading ? { scale: 0.98 } : {}}
               >
-                {isLogin ? 'Acceder' : 'Crear cuenta'}
+                {isLoading ? 'Cargando...' : (isLogin ? 'Acceder' : 'Crear cuenta')}
               </motion.button>
             </form>
 

@@ -7,14 +7,16 @@ import {
   UtensilsCrossed,
   ImageIcon,
   X,
+  Loader2,
+  AlertTriangle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import {
-  fullMenuData,
-  type MenuSubcategory,
-  type NewMenuItem,
-} from '../data/menuData';
+import { useCategories } from '../hooks/useCatalog';
+import type {
+  MenuSubcategory,
+  MenuItem as NewMenuItem,
+} from '../types/api';
 import SEOHead from '../components/SEOHead';
 
 const categoryIcons = {
@@ -259,6 +261,9 @@ const FullMenuPage: React.FC = () => {
     name: string;
   } | null>(null);
 
+  // Obtener datos del catálogo desde el backend
+  const { categories, isLoading, error, refetch } = useCategories();
+
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -275,8 +280,70 @@ const FullMenuPage: React.FC = () => {
   };
 
   const filteredCategories = selectedCategory
-    ? fullMenuData.categories.filter((cat) => cat.slug === selectedCategory)
-    : fullMenuData.categories;
+    ? categories.filter((cat) => cat.slug === selectedCategory)
+    : categories;
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 text-yellow-400 animate-spin mx-auto mb-4" />
+          <p className="text-white text-lg">Cargando carta...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <AlertTriangle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+          <h2 className="text-white text-xl font-bold mb-2">Error al cargar la carta</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button
+            onClick={refetch}
+            className="bg-yellow-400 text-black px-6 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition-colors"
+          >
+            Intentar de nuevo
+          </button>
+          <button
+            onClick={() => navigate('/')}
+            className="block mt-4 text-gray-400 hover:text-white transition-colors"
+          >
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // No categories available
+  if (!categories || categories.length === 0) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <UtensilsCrossed className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <h2 className="text-white text-xl font-bold mb-2">Carta no disponible</h2>
+          <p className="text-gray-400 mb-6">No hay categorías disponibles en este momento</p>
+          <button
+            onClick={refetch}
+            className="bg-yellow-400 text-black px-6 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition-colors"
+          >
+            Actualizar
+          </button>
+          <button
+            onClick={() => navigate('/')}
+            className="block mt-4 text-gray-400 hover:text-white transition-colors"
+          >
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -334,7 +401,7 @@ const FullMenuPage: React.FC = () => {
                 >
                   Todas las categorías
                 </button>
-                {fullMenuData.categories.map((category) => {
+                {categories.map((category) => {
                   const Icon =
                     categoryIcons[
                       category.slug as keyof typeof categoryIcons
@@ -398,7 +465,7 @@ const FullMenuPage: React.FC = () => {
                         <SubcategorySection
                           key={idx}
                           subcategory={subcategory}
-                          currency={fullMenuData.currency}
+                          currency="€"
                           isSignature={subcategory.type === 'signature'}
                           onImageClick={handleImageClick}
                         />
@@ -414,8 +481,7 @@ const FullMenuPage: React.FC = () => {
           <div className="bg-black/40 backdrop-blur-sm border-t border-gray-700/50 py-6 mt-12">
             <div className="max-w-6xl mx-auto px-4 text-center">
               <p className="text-gray-400 text-sm">
-                Carta actualizada • Precios en {fullMenuData.currency} • IVA
-                incluido
+                Carta actualizada • Precios en € • IVA incluido
               </p>
             </div>
           </div>
