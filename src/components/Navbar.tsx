@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface NavbarProps {
   onLoginClick: () => void;
@@ -9,6 +10,8 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Hook para detectar el scroll
   useEffect(() => {
@@ -47,18 +50,36 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
   }, [mobileMenuOpen]);
 
   const menuItems = [
-    { name: 'Inicio', id: 'hero' },
-    { name: 'Carta', id: 'menu' },
-    { name: 'Ubicación', id: 'location' },
+    { name: 'Inicio', id: 'hero', type: 'scroll' },
+    { name: 'Carta', id: 'menu', type: 'scroll' },
+    { name: 'Nuestro espacio', id: 'discover-space', type: 'scroll' },
+    { name: 'Ubicación', id: 'location', type: 'scroll' },
     // { name: 'Galería', id: 'gallery' }, // Oculto temporalmente
     // { name: 'Eventos', id: 'events' }, // Oculto temporalmente
-    { name: 'Contacto', id: 'contact' }
+    { name: 'Contacto', id: 'contact', type: 'scroll' },
   ];
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleNavigation = (item: {
+    name: string;
+    id: string;
+    type: string;
+  }) => {
+    // Para elementos de scroll, si no estamos en la landing page, ir primero a home
+    if (location.pathname !== '/') {
+      navigate('/');
+      // Esperar un poco para que la página se cargue antes de hacer scroll
+      setTimeout(() => {
+        const element = document.getElementById(item.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // Si ya estamos en la landing page, hacer scroll directo
+      const element = document.getElementById(item.id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
     setMobileMenuOpen(false);
   };
@@ -93,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
               {menuItems.map((item) => (
                 <motion.button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => handleNavigation(item)}
                   whileHover={{ y: -1 }}
                   className="px-6 py-2 text-white/70 hover:text-white transition-colors duration-300 text-sm font-medium"
                 >
@@ -169,7 +190,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
                       className="w-full text-left p-4 text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300"
-                      onClick={() => scrollToSection(item.id)}
+                      onClick={() => handleNavigation(item)}
                     >
                       {item.name}
                     </motion.button>

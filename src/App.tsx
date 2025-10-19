@@ -4,6 +4,8 @@ import MenuPage from './pages/MenuPage';
 import FullMenuPage from './pages/FullMenuPage';
 import ShishaPage from './pages/ShishaPage';
 import GaleriaCachimbas from './pages/GaleriaCachimbas';
+import LocalPage from './pages/LocalPage';
+import DesayunosPage from './pages/DesayunosPage';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/menu/:categorySlug" element={<MenuPage />} />
         <Route path="/shisha" element={<ShishaPage />} />
         <Route path="/galeria-cachimbas" element={<GaleriaCachimbas />} />
+        <Route path="/local" element={<LocalPage />} />
+        <Route path="/desayunos" element={<DesayunosPage />} />
       </Routes>
     </Router>
   );

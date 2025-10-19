@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import LocationMap from '../components/LocationMap';
 import Footer from '../components/Footer';
 import MenuCategories from '../components/MenuCategories';
+import DiscoverSpace from '../components/DiscoverSpace';
 import CloudinaryVideoBackground from '../components/CloudinaryVideoBackground';
 import SEOHead from '../components/SEOHead';
 import WhatsAppButton from '../components/WhatsAppButton';
@@ -166,6 +167,9 @@ const LandingPage: React.FC = () => {
             <MenuCategories />
           </div>
         </section>
+
+        {/* Discover Space Section */}
+        <DiscoverSpace />
 
         {/* Location Map Section */}
         <LocationMap />
