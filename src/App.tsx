@@ -6,6 +6,7 @@ import ShishaPage from './pages/ShishaPage';
 import GaleriaCachimbas from './pages/GaleriaCachimbas';
 import LocalPage from './pages/LocalPage';
 import DesayunosPage from './pages/DesayunosPage';
+import TableManagement from './pages/TableManagement';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/galeria-cachimbas" element={<GaleriaCachimbas />} />
         <Route path="/local" element={<LocalPage />} />
         <Route path="/desayunos" element={<DesayunosPage />} />
+        <Route path="/table-management" element={<TableManagement />} />
+
       </Routes>
     </Router>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Clock, Phone, Navigation } from 'lucide-react';
 
@@ -35,6 +35,27 @@ const LocationMap: React.FC<LocationMapProps> = ({
     },
   },
 }) => {
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  // Lazy load map when component is in viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !shouldLoadMap) {
+          setShouldLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (mapContainerRef.current) {
+      observer.observe(mapContainerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [shouldLoadMap]);
   // Generate Google Maps embed URL
   const mapUrl = `https://maps.google.com/maps?q=${locationInfo.coordinates.lat},${locationInfo.coordinates.lng}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
@@ -119,16 +140,28 @@ const LocationMap: React.FC<LocationMapProps> = ({
             }}
             className="relative"
           >
-            <div className="aspect-square relative overflow-hidden rounded-lg border border-white/20 group">
-              <iframe
-                src={mapUrl}
-                className="absolute inset-0 w-full h-full transition-all duration-500 group-hover:scale-105"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Ego House Location"
-              />
+            <div
+              ref={mapContainerRef}
+              className="aspect-square relative overflow-hidden rounded-lg border border-white/20 group"
+            >
+              {shouldLoadMap ? (
+                <iframe
+                  src={mapUrl}
+                  className="absolute inset-0 w-full h-full transition-all duration-500 group-hover:scale-105"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Ego House Location"
+                />
+              ) : (
+                <div className="absolute inset-0 w-full h-full bg-zinc-800 flex items-center justify-center">
+                  <div className="text-white/50 text-center">
+                    <MapPin className="w-8 h-8 mx-auto mb-2" />
+                    <p className="text-sm">Cargando mapa...</p>
+                  </div>
+                </div>
+              )}
               {/* Subtle hover overlay */}
               <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.03] transition-all duration-500 pointer-events-none" />
             </div>

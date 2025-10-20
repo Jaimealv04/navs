@@ -78,7 +78,7 @@ const LandingPage: React.FC = () => {
       {/* SEO Meta Tags */}
       <SEOHead
         title="EGO HOUSE Madrid"
-        description="La mejor tetería de Madrid. Fumar cachimba premium en el centro de Madrid. EGO HOUSE: experiencia única de shisha, gastronomía exquisita y ambiente exclusivo. Reserva ya!"
+        description="La mejor tetería de Madrid. Fumar cachimba en el centro de Madrid. EGO HOUSE: experiencia única de shisha, gastronomía exquisita y ambiente exclusivo. Reserva ya!"
         keywords="ego house madrid, mejores teterias madrid, fumar cachimba madrid, tetería madrid centro, cachimba madrid, hookah lounge madrid, donde fumar cachimba madrid, tetería premium madrid, shisha madrid, cachimba centro madrid, hookah bar madrid, tetería moderna madrid, cachimba con comida madrid, mejor cachimba madrid, tetería ambiente madrid, tetería madrid, ego house, egohouse, egohouse madrid, Ego House Madrid"
         url="https://www.egohousebynavs.com"
         image="https://www.egohousebynavs.com/hookas.jpg"
@@ -96,7 +96,7 @@ const LandingPage: React.FC = () => {
           {/* Cloudinary Video Background */}
           <CloudinaryVideoBackground
             cloudinaryUrl="https://res.cloudinary.com/dm70hhhnm/video/upload/f_auto,q_auto/Portada_1080_editada_bflw9o.mp4"
-            posterImage="https://res.cloudinary.com/dm70hhhnm/image/upload/f_auto,q_auto/Portada_1080_editada_bflw9o.jpg"
+            posterImage="/HomeMobile.png"
             mobileImage="/HomeMobile.png"
             ariaLabel="Video de ambiente de EGO HOUSE Madrid"
           />{' '}
@@ -108,10 +108,14 @@ const LandingPage: React.FC = () => {
               initial={isMobileOrTablet ? false : 'hidden'}
               animate={isMobileOrTablet ? false : 'visible'}
             >
-              {/* Main Heading */}
+              {/* Main Heading - Optimizado para LCP */}
               <motion.h1
                 variants={itemVariants}
                 className="text-6xl md:text-8xl lg:text-9xl font-extralight mb-8 leading-none tracking-tighter"
+                style={{
+                  willChange: 'transform',
+                  transform: 'translateZ(0)', // Forzar aceleración de hardware
+                }}
               >
                 <span className="text-white block">EGO HOUSE</span>
               </motion.h1>

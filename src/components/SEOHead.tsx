@@ -21,6 +21,28 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     // Actualizar título
     document.title = title;
 
+    // Precargar fuentes críticas
+    const preloadFont = (href: string, crossOrigin = true) => {
+      const existing = document.querySelector(`link[href="${href}"]`);
+      if (!existing) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.href = href;
+        if (crossOrigin) link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+      }
+    };
+
+    // Precargar fuentes de Poppins más utilizadas
+    preloadFont(
+      'https://fonts.gstatic.com/s/poppins/v21/pxiEyp8kv8JHgFVrJJfecg.woff2'
+    );
+    preloadFont(
+      'https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLGT9Z1xlFd2JQEk.woff2'
+    );
+
     // Función para actualizar o crear meta tags
     const updateMetaTag = (
       property: string,

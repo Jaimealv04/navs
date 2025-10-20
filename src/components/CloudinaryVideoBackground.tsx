@@ -117,18 +117,16 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
     };
 
     // Usar passive listeners para mejor rendimiento
-    document.addEventListener('touchstart', handleInteraction, {
-      passive: true,
-      once: true,
-    });
-    document.addEventListener('click', handleInteraction, {
-      passive: true,
-      once: true,
-    });
-    document.addEventListener('scroll', handleInteraction, {
-      passive: true,
-      once: true,
-    });
+    const addPassiveListener = (event: string, handler: () => void) => {
+      document.addEventListener(event, handler, {
+        passive: true,
+        once: true,
+      });
+    };
+
+    addPassiveListener('touchstart', handleInteraction);
+    addPassiveListener('click', handleInteraction);
+    addPassiveListener('scroll', handleInteraction);
 
     return () => {
       document.removeEventListener('touchstart', handleInteraction);
@@ -188,7 +186,9 @@ const CloudinaryVideoBackground: React.FC<CloudinaryVideoBackgroundProps> = ({
               }`
         }`}
         style={{ zIndex: isMobileOrTablet || showFallback ? 2 : 1 }}
-        loading="eager"
+        loading="lazy"
+        decoding="async"
+        fetchPriority="high"
       />
 
       {/* Overlay oscuro */}
