@@ -126,10 +126,29 @@ export class CatalogService {
   /**
    * Agregar item a subcategoría (requiere rol ADMIN)
    */
-  static async addItem(data: AddItemRequest): Promise<Category> {
-    return makeRequest(() => 
-      apiClient.post<Category>('/catalog/item', data)
-    );
+  static async addItem(data: AddItemRequest, imageFile?: File): Promise<Category> {
+    return makeRequest(() => {
+      if (imageFile) {
+        // Si hay imagen, usar FormData
+        const formData = new FormData();
+        formData.append('categoryId', data.categoryId);
+        formData.append('subcategoryName', data.subcategoryName);
+        if (data.subsectionName) {
+          formData.append('subsectionName', data.subsectionName);
+        }
+        formData.append('item', JSON.stringify(data.item));
+        formData.append('image', imageFile);
+        
+        return apiClient.post<Category>('/catalog/item', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        // Sin imagen, usar JSON
+        return apiClient.post<Category>('/catalog/item', data);
+      }
+    });
   }
 
   /**

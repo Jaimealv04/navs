@@ -26,8 +26,15 @@ const categoryIcons = {
   cocktails: Wine,
 } as const;
 
-const formatPrice = (price: number, currency: string = '€'): string => {
-  return `${price.toFixed(2).replace('.00', '')}${currency}`;
+const formatPrice = (price: number | undefined | null, currency: string = '€'): string => {
+  if (!price && price !== 0) {
+    return 'Precio no disponible';
+  }
+  const numPrice = Number(price);
+  if (isNaN(numPrice)) {
+    return 'Precio no disponible';
+  }
+  return `${numPrice.toFixed(2).replace('.00', '')}${currency}`;
 };
 
 // Componente para imagen placeholder
@@ -153,18 +160,22 @@ const MenuItemComponent: React.FC<{
           <h4 className="text-white font-medium text-lg font-['Poppins']">
             {item.name}
           </h4>
-          <div className="text-yellow-400 font-semibold ml-4">
-            {item.variants ? (
-              <div className="text-right space-y-1">
+          <div className="text-yellow-400 font-semibold ml-4 text-right">
+            {item.variants && item.variants.length > 0 ? (
+              <div className="space-y-1">
                 {item.variants.map((variant, idx) => (
                   <div key={idx} className="text-sm">
                     <span className="text-gray-300">{variant.size}: </span>
-                    {formatPrice(variant.price, currency)}
+                    <span className="text-yellow-400">{formatPrice(variant.price, currency)}</span>
                   </div>
                 ))}
               </div>
+            ) : item.price !== undefined && item.price !== null ? (
+              <div className="text-lg">
+                {formatPrice(item.price, currency)}
+              </div>
             ) : (
-              item.price && formatPrice(item.price, currency)
+              <span className="text-gray-400 text-sm">Precio no disponible</span>
             )}
           </div>
         </div>
