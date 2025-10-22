@@ -9,6 +9,7 @@ import MenuCategories from '../components/MenuCategories';
 import CloudinaryVideoBackground from '../components/CloudinaryVideoBackground';
 import SEOHead from '../components/SEOHead';
 import WhatsAppButton from '../components/WhatsAppButton';
+import DiscoverSpace from './DiscoverSpace';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -164,12 +165,14 @@ const LandingPage: React.FC = () => {
         </section>
 
         {/* Menu Categories Section */}
-        <section id="menu" className="relative bg-black py-10 pb-50">
+        <section id="menu" className="relative bg-black py-10 pb-20">
           {/* Content */}
           <div className="relative z-10">
             <MenuCategories />
           </div>
         </section>
+
+        <DiscoverSpace />
 
         {/* Location Map Section */}
         <LocationMap />

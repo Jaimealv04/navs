@@ -121,7 +121,7 @@ const AdminDashboard: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            onClick={() => setActiveSection('reservas')}
+            onClick={() => navigate('/admin/tables')}
             className="group cursor-pointer"
           >
             <div className="bg-gray-900/80 backdrop-blur-lg border border-gray-700/50 rounded-2xl p-8 hover:border-yellow-400/50 transition-all duration-300 group-hover:transform group-hover:scale-105">
@@ -191,48 +191,12 @@ const AdminDashboard: React.FC = () => {
     </div>
   );
 
-  const renderReservationManagement = () => (
-    <div className="min-h-screen bg-gray-950 pt-20">
-      <div className="max-w-6xl mx-auto p-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <button
-            onClick={() => setActiveSection(null)}
-            className="flex items-center space-x-2 text-gray-400 hover:text-white mb-4 transition-colors"
-          >
-            <ArrowLeft size={20} />
-            <span>Volver al panel principal</span>
-          </button>
-          
-          <h2 className="text-3xl font-bold text-white">
-            Gestión de Reservas
-          </h2>
-          <p className="text-gray-400 mt-2">
-            Administra reservas y disponibilidad de mesas
-          </p>
-        </motion.div>
-
-        {/* Aquí irá el componente de gestión de reservas */}
-        <div className="bg-gray-900/80 backdrop-blur-lg border border-gray-700/50 rounded-2xl p-8">
-          <div className="text-center text-gray-400">
-            <Calendar size={48} className="mx-auto mb-4" />
-            <p>Componente de gestión de reservas en desarrollo...</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gray-950">
       {renderHeader()}
       
       {activeSection === null && renderMainMenu()}
       {activeSection === 'menu' && renderMenuManagement()}
-      {activeSection === 'reservas' && renderReservationManagement()}
     </div>
   );
 };
