@@ -5,6 +5,9 @@ import type {
   CreateCategoryRequest,
   UpdateCategoryRequest,
   AddItemRequest,
+  UpdateItemRequest,
+  UpdateSubcategoryNameRequest,
+  UpdateSubsectionNameRequest,
   DeleteResponse,
   DeleteItemResponse,
   ItemSearchResult
@@ -157,6 +160,56 @@ export class CatalogService {
   static async deleteItem(categoryId: string, itemName: string): Promise<DeleteItemResponse> {
     return makeRequest(() => 
       apiClient.delete<DeleteItemResponse>(`/catalog/category/${categoryId}/item/${itemName}`)
+    );
+  }
+
+  // ===== ENDPOINTS DE EDICIÓN (Solo ADMIN) =====
+
+  /**
+   * Actualizar item existente (requiere rol ADMIN)
+   * Permite actualizar cualquier campo de un item específico, incluyendo la opción de cambiar su imagen
+   */
+  static async updateItem(data: UpdateItemRequest, imageFile?: File): Promise<Category> {
+    return makeRequest(() => {
+      if (imageFile) {
+        // Si hay imagen, usar FormData
+        const formData = new FormData();
+        formData.append('categoryId', data.categoryId);
+        formData.append('subcategoryName', data.subcategoryName);
+        if (data.subsectionName) {
+          formData.append('subsectionName', data.subsectionName);
+        }
+        formData.append('itemName', data.itemName);
+        formData.append('itemData', JSON.stringify(data.itemData));
+        formData.append('image', imageFile);
+        
+        return apiClient.put<Category>('/catalog/item', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        // Sin imagen, usar JSON
+        return apiClient.put<Category>('/catalog/item', data);
+      }
+    });
+  }
+
+  /**
+   * Actualizar nombre de subcategoría (requiere rol ADMIN)
+   */
+  static async updateSubcategoryName(data: UpdateSubcategoryNameRequest): Promise<Category> {
+    return makeRequest(() => 
+      apiClient.put<Category>('/catalog/subcategory/name', data)
+    );
+  }
+
+  /**
+   * Actualizar nombre de subsección (requiere rol ADMIN)
+   */
+  static async updateSubsectionName(data: UpdateSubsectionNameRequest): Promise<Category> {
+    return makeRequest(() => 
+      apiClient.put<Category>('/catalog/subsection/name', data)
     );
   }
 

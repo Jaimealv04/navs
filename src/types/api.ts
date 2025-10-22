@@ -103,6 +103,29 @@ export interface AddItemRequest {
   item: MenuItem;
 }
 
+// ===== REQUESTS PARA EDICIÓN =====
+
+export interface UpdateItemRequest {
+  categoryId: string;
+  subcategoryName: string;
+  subsectionName?: string;
+  itemName: string;
+  itemData: Partial<MenuItem>;
+}
+
+export interface UpdateSubcategoryNameRequest {
+  categoryId: string;
+  oldName: string;
+  newName: string;
+}
+
+export interface UpdateSubsectionNameRequest {
+  categoryId: string;
+  subcategoryName: string;
+  oldName: string;
+  newName: string;
+}
+
 // ===== RESPONSES GENERALES =====
 
 export interface ApiError {
