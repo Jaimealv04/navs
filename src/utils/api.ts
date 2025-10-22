@@ -6,7 +6,7 @@ import type { ApiError } from '../types';
 export const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_BASE_URL || 'http://localhost:3000',
   JWT_TOKEN_KEY: import.meta.env.VITE_JWT_TOKEN_KEY || 'ego_house_token',
-  TIMEOUT: import.meta.env.VITE_TIMEOUT || 10000,
+  //TIMEOUT: import.meta.env.VITE_TIMEOUT || 10000,
 } as const;
 
 // Variable para acceder al store de Zustand desde fuera de React
@@ -21,7 +21,8 @@ export const setAuthStoreApi = (api: any) => {
 const createAxiosInstance = (): AxiosInstance => {
   const instance = axios.create({
     baseURL: API_CONFIG.BASE_URL,
-    timeout: API_CONFIG.TIMEOUT,
+    //timeout: API_CONFIG.TIMEOUT,
+    withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -38,7 +39,7 @@ const createAxiosInstance = (): AxiosInstance => {
         // Fallback al localStorage
         token = localStorage.getItem(API_CONFIG.JWT_TOKEN_KEY);
       }
-      
+
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -59,7 +60,7 @@ const createAxiosInstance = (): AxiosInstance => {
       if (error.response?.status === 401) {
         // Limpiar localStorage
         localStorage.removeItem(API_CONFIG.JWT_TOKEN_KEY);
-        
+
         // Limpiar store de Zustand si está disponible
         if (authStoreApi) {
           authStoreApi.getState().logout();
@@ -88,19 +89,19 @@ export const tokenUtils = {
   get: (): string | null => {
     return localStorage.getItem(API_CONFIG.JWT_TOKEN_KEY);
   },
-  
+
   set: (token: string): void => {
     localStorage.setItem(API_CONFIG.JWT_TOKEN_KEY, token);
   },
-  
+
   remove: (): void => {
     localStorage.removeItem(API_CONFIG.JWT_TOKEN_KEY);
   },
-  
+
   isValid: (): boolean => {
     const token = tokenUtils.get();
     if (!token) return false;
-    
+
     try {
       // Verificar si el token no ha expirado (decodificar JWT básico)
       const payload = JSON.parse(atob(token.split('.')[1]));
