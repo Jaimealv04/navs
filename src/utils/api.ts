@@ -4,9 +4,9 @@ import type { ApiError } from '../types';
 
 // Configuración de la API
 export const API_CONFIG = {
-  BASE_URL: 'http://localhost:3000',
-  JWT_TOKEN_KEY: 'ego_house_token',
-  TIMEOUT: 10000,
+  BASE_URL: import.meta.env.VITE_BASE_URL || 'http://localhost:3000',
+  JWT_TOKEN_KEY: import.meta.env.VITE_JWT_TOKEN_KEY || 'ego_house_token',
+  TIMEOUT: import.meta.env.VITE_TIMEOUT || 10000,
 } as const;
 
 // Variable para acceder al store de Zustand desde fuera de React
