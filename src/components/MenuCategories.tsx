@@ -2,11 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { getAllCategories } from '../data/menuData';
+import { useCategories } from '../hooks/useCatalog';
 
 const MenuCategories: React.FC = () => {
   const navigate = useNavigate();
-  const menuCategories = getAllCategories();
+  const { categories: menuCategories, isLoading, error } = useCategories();
 
   // Calcular el total de items en todas las categorías
   const totalItems = menuCategories.reduce((total, category) => {
@@ -35,6 +35,10 @@ const MenuCategories: React.FC = () => {
     navigate('/menu/general');
   };
 
+  const handleShishaClick = () => {
+    navigate('/shisha');
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -57,6 +61,28 @@ const MenuCategories: React.FC = () => {
       },
     },
   };
+
+  // Manejo de estados de carga y error
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 font-['Poppins']">
+        <div className="text-center py-20">
+          <div className="text-white text-xl">Cargando carta...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 font-['Poppins']">
+        <div className="text-center py-20">
+          <div className="text-red-400 text-xl">Error al cargar la carta</div>
+          <div className="text-gray-300 text-sm mt-2">{error}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 font-['Poppins']">
@@ -143,7 +169,7 @@ const MenuCategories: React.FC = () => {
             y: -8,
             transition: { type: 'spring', stiffness: 400, damping: 25 },
           }}
-          onClick={() => navigate('/shisha')}
+          onClick={handleShishaClick}
           className="group relative cursor-pointer overflow-hidden"
         >
           {/* Background Image */}
