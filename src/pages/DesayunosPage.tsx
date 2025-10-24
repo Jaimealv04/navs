@@ -1,39 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '../components/Navbar';
+import BackToMenuButton from '../components/BackToMenuButton';
 import Footer from '../components/Footer';
 import SEOHead from '../components/SEOHead';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { OrderForm } from '../components/OrderForm';
+import type { OrderType } from '../types';
+import { ORDER_CONFIG } from '../types/order.types';
 
 interface BreakfastMenu {
-  id: string;
+  type: OrderType;
   name: string;
   description: string;
   price: number;
-  items: string[];
-}
-
-interface OrderData {
-  name: string;
-  phone: string;
-  email: string;
-  selectedMenu: string;
-  quantity: number;
-  observations: string;
+  items: readonly string[];
 }
 
 const DesayunosPage: React.FC = () => {
-  const [showLogin, setShowLogin] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState<string>('');
-  const [orderData, setOrderData] = useState<OrderData>({
-    name: '',
-    phone: '',
-    email: '',
-    selectedMenu: '',
-    quantity: 1,
-    observations: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState<OrderType | null>(null);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
 
   // Scroll to top when component mounts
@@ -43,75 +27,35 @@ const DesayunosPage: React.FC = () => {
 
   const breakfastMenus: BreakfastMenu[] = [
     {
-      id: 'menu1',
+      type: 'classic',
       name: 'Desayuno Clásico',
       description: 'La combinación perfecta para empezar el día',
-      price: 4,
-      items: ['Café', 'Zumo de naranja', 'Croissant'],
+      price: ORDER_CONFIG['classic'].price,
+      items: ORDER_CONFIG['classic'].food,
     },
     {
-      id: 'menu2',
+      type: 'traditional',
       name: 'Desayuno Tradicional',
       description: 'Sabor auténtico con mollete de jamón',
-      price: 5,
-      items: ['Café', 'Zumo de naranja', 'Mollete jamón'],
+      price: ORDER_CONFIG['traditional'].price,
+      items: ORDER_CONFIG['traditional'].food,
     },
     {
-      id: 'menu3',
+      type: 'premium',
       name: 'Desayuno Premium',
       description: 'Una experiencia gourmet para paladares exigentes',
-      price: 6,
-      items: ['Café', 'Zumo de naranja', 'Mollete aguacate y salmón'],
+      price: ORDER_CONFIG['premium'].price,
+      items: ORDER_CONFIG['premium'].food,
     },
   ];
 
-  const handleMenuSelect = (menuId: string) => {
-    setSelectedMenu(menuId);
-    setOrderData((prev) => ({ ...prev, selectedMenu: menuId }));
+  const handleMenuSelect = (menuType: OrderType) => {
+    setSelectedMenu(menuType);
   };
 
-  const handleInputChange = (
-    field: keyof OrderData,
-    value: string | number
-  ) => {
-    setOrderData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmitOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate order processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const selectedMenuData = breakfastMenus.find(
-      (menu) => menu.id === orderData.selectedMenu
-    );
-    const total = selectedMenuData
-      ? selectedMenuData.price * orderData.quantity
-      : 0;
-
-    // Create WhatsApp message
-    const message = `*PEDIDO DE DESAYUNO - EGO HOUSE*
-
-*Detalles del pedido:*
-• Menú: ${selectedMenuData?.name}
-• Cantidad: ${orderData.quantity}
-• Precio unitario: ${selectedMenuData?.price}€
-• Total: ${total}€
-
-*Datos del cliente:*
-• Nombre: ${orderData.name}
-• Teléfono: ${orderData.phone}
-• Email: ${orderData.email}
-
-${orderData.observations ? `*Observaciones:* ${orderData.observations}` : ''}`;
-
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/34646149112?text=${encodedMessage}`, '_blank');
-
-    setIsSubmitting(false);
+  const handleOrderSuccess = () => {
     setOrderSubmitted(true);
+    setSelectedMenu(null); // Limpiar selección después del pedido exitoso
   };
 
   if (orderSubmitted) {
@@ -157,7 +101,10 @@ ${orderData.observations ? `*Observaciones:* ${orderData.observations}` : ''}`;
             disponibilidad y tiempo de preparación.
           </p>
           <button
-            onClick={() => setOrderSubmitted(false)}
+            onClick={() => {
+              setOrderSubmitted(false);
+              setSelectedMenu(null);
+            }}
             className="bg-white text-black px-6 py-2 font-light hover:bg-white/90 transition-all duration-300"
           >
             Hacer otro pedido
@@ -178,8 +125,8 @@ ${orderData.observations ? `*Observaciones:* ${orderData.observations}` : ''}`;
         image="https://www.egohousebynavs.com/hookas.jpg"
       />
 
-      {/* Navbar */}
-      <Navbar onLoginClick={() => setShowLogin(true)} />
+      {/* Back to Menu Button */}
+      <BackToMenuButton />
 
       {/* Main Content */}
       <main className="relative min-h-screen pt-24 pb-16 overflow-hidden">
@@ -225,14 +172,14 @@ ${orderData.observations ? `*Observaciones:* ${orderData.observations}` : ''}`;
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {breakfastMenus.map((menu) => (
                 <motion.div
-                  key={menu.id}
+                  key={menu.type}
                   whileHover={{ scale: 1.02 }}
                   className={`relative p-6 bg-white/5 backdrop-blur-sm rounded-lg border cursor-pointer transition-all duration-300 ${
-                    selectedMenu === menu.id
+                    selectedMenu === menu.type
                       ? 'border-white bg-white/10'
                       : 'border-white/20 hover:border-white/40'
                   }`}
-                  onClick={() => handleMenuSelect(menu.id)}
+                  onClick={() => handleMenuSelect(menu.type)}
                 >
                   <div className="text-center">
                     <h3 className="text-xl font-light text-white mb-2">
@@ -252,7 +199,7 @@ ${orderData.observations ? `*Observaciones:* ${orderData.observations}` : ''}`;
                       {menu.price}€
                     </div>
                   </div>
-                  {selectedMenu === menu.id && (
+                  {selectedMenu === menu.type && (
                     <motion.div
                       layoutId="selectedMenu"
                       className="absolute inset-0 border-2 border-white rounded-lg"
@@ -270,114 +217,10 @@ ${orderData.observations ? `*Observaciones:* ${orderData.observations}` : ''}`;
 
           {/* Order Form */}
           {selectedMenu && (
-            <motion.form
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              onSubmit={handleSubmitOrder}
-              className="bg-white/5 backdrop-blur-sm rounded-lg p-8 border border-white/20"
-            >
-              <h3 className="text-2xl font-light text-white mb-8 text-center">
-                Datos del pedido
-              </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* Name */}
-                <div>
-                  <label className="block text-white/70 text-sm mb-2">
-                    Nombre completo *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={orderData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded px-4 py-3 text-white placeholder-white/50 focus:border-white focus:outline-none transition-colors"
-                    placeholder="Tu nombre"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <label className="block text-white/70 text-sm mb-2">
-                    Teléfono *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={orderData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded px-4 py-3 text-white placeholder-white/50 focus:border-white focus:outline-none transition-colors"
-                    placeholder="+34 600 000 000"
-                  />
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label className="block text-white/70 text-sm mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={orderData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded px-4 py-3 text-white placeholder-white/50 focus:border-white focus:outline-none transition-colors"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-
-                {/* Quantity */}
-                <div>
-                  <label className="block text-white/70 text-sm mb-2">
-                    Cantidad
-                  </label>
-                  <select
-                    value={orderData.quantity}
-                    onChange={(e) =>
-                      handleInputChange('quantity', parseInt(e.target.value))
-                    }
-                    className="w-full bg-white/10 border border-white/20 rounded px-4 py-3 text-white focus:border-white focus:outline-none transition-colors"
-                  >
-                    {[1, 2, 3, 4, 5].map((num) => (
-                      <option key={num} value={num} className="bg-black">
-                        {num}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Observations */}
-              <div className="mb-8">
-                <label className="block text-white/70 text-sm mb-2">
-                  Observaciones (opcional)
-                </label>
-                <textarea
-                  value={orderData.observations}
-                  onChange={(e) =>
-                    handleInputChange('observations', e.target.value)
-                  }
-                  rows={3}
-                  className="w-full bg-white/10 border border-white/20 rounded px-4 py-3 text-white placeholder-white/50 focus:border-white focus:outline-none transition-colors resize-none"
-                  placeholder="Alguna preferencia o comentario..."
-                />
-              </div>
-
-              {/* Submit Button */}
-              <div className="text-center">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="bg-white text-black px-8 py-3 font-light hover:bg-white/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Enviando pedido...' : 'Realizar pedido'}
-                </button>
-                <p className="text-white/50 text-sm mt-4">
-                  * El pedido se enviará por WhatsApp para confirmación
-                </p>
-              </div>
-            </motion.form>
+            <OrderForm
+              selectedMenuType={selectedMenu}
+              onSuccess={handleOrderSuccess}
+            />
           )}
         </div>
       </main>

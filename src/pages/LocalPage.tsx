@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import React, { useEffect } from 'react';
+import BackToMenuButton from '../components/BackToMenuButton';
 import Footer from '../components/Footer';
 import LocalSpaces from '../components/LocalSpaces';
 import SEOHead from '../components/SEOHead';
 
 const LocalPage: React.FC = () => {
-  const [showLogin, setShowLogin] = useState(false);
-
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,8 +22,8 @@ const LocalPage: React.FC = () => {
         image="https://www.egohousebynavs.com/hookas.jpg"
       />
 
-      {/* Navbar */}
-      <Navbar/>
+      {/* Back to Menu Button */}
+      <BackToMenuButton />
 
       {/* Local Spaces Section */}
       <section className="bg-black">

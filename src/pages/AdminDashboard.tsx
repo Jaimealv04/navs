@@ -11,12 +11,16 @@ import {
   Edit,
   Trash2,
   ChefHat,
-  ArrowLeft
+  ArrowLeft,
+  Package,
+  CheckCircle,
+  Eye
 } from 'lucide-react';
 import { useAuthWithServices } from '../hooks/useAuthWithServices';
 import MenuManagement from '../components/admin/MenuManagement';
+import { OrderManagement } from '../components/admin/OrderManagement';
 
-type AdminSection = 'menu' | 'reservas' | null;
+type AdminSection = 'menu' | 'reservas' | 'pedidos' | null;
 
 const AdminDashboard: React.FC = () => {
   const { logout, user } = useAuthWithServices();
@@ -75,7 +79,7 @@ const AdminDashboard: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Modificación de Carta */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -155,6 +159,46 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* Gestión de Pedidos */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            onClick={() => setActiveSection('pedidos')}
+            className="group cursor-pointer"
+          >
+            <div className="bg-gray-900/80 backdrop-blur-lg border border-gray-700/50 rounded-2xl p-8 hover:border-yellow-400/50 transition-all duration-300 group-hover:transform group-hover:scale-105">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-400/10 rounded-full mb-6 group-hover:bg-yellow-400/20 transition-colors">
+                  <Package className="text-yellow-400" size={40} />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  Gestión de Pedidos
+                </h3>
+                
+                <p className="text-gray-400 mb-6">
+                  Administra pedidos de desayunos, cierra, edita y elimina pedidos
+                </p>
+                
+                <div className="space-y-2 text-sm text-gray-500">
+                  <div className="flex items-center justify-center space-x-2">
+                    <Eye size={16} />
+                    <span>Ver pedidos</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <CheckCircle size={16} />
+                    <span>Cerrar/Reabrir pedidos</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <Edit size={16} />
+                    <span>Editar detalles</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
@@ -191,12 +235,44 @@ const AdminDashboard: React.FC = () => {
     </div>
   );
 
+  const renderOrderManagement = () => (
+    <div className="min-h-screen bg-gray-950 pt-20">
+      <div className="max-w-6xl mx-auto p-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <button
+            onClick={() => setActiveSection(null)}
+            className="flex items-center space-x-2 text-gray-400 hover:text-white mb-4 transition-colors"
+          >
+            <ArrowLeft size={20} />
+            <span>Volver al panel principal</span>
+          </button>
+          
+          <h2 className="text-3xl font-bold text-white">
+            Gestión de Pedidos
+          </h2>
+          <p className="text-gray-400 mt-2">
+            Administra los pedidos de desayunos de los clientes
+          </p>
+        </motion.div>
+
+        <div className="bg-gray-900/80 backdrop-blur-lg border border-gray-700/50 rounded-2xl p-8">
+          <OrderManagement />
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-950">
       {renderHeader()}
       
       {activeSection === null && renderMainMenu()}
       {activeSection === 'menu' && renderMenuManagement()}
+      {activeSection === 'pedidos' && renderOrderManagement()}
     </div>
   );
 };

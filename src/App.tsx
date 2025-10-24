@@ -23,7 +23,7 @@ function App() {
           <Route path="/shisha" element={<ShishaPage />} />
           <Route path="/galeria-cachimbas" element={<GaleriaCachimbas />} />
           <Route path="/local" element={<LocalPage />} />      
-          <Route path="/desayunos?egohouse" element={<DesayunosPage />} />
+          <Route path="/desayunos" element={<DesayunosPage />} />
 
           {/* Rutas protegidas - requieren autenticación */}
           <Route 
